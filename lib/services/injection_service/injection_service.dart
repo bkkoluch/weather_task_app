@@ -8,4 +8,4 @@ final getIt = GetIt.instance;
   initializerName: r'$initGetIt',
   preferRelativeImports: false,
 )
-Future<void> configureInjector() async => $initGetIt(getIt);
+void configureInjector() => $initGetIt(getIt);

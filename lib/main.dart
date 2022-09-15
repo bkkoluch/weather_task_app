@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:weather_task_app/features/weather/data/data_sources/weather_remote_data_source.dart';
 import 'package:weather_task_app/services/injection_service/injection_service.dart';
-import 'package:weather_task_app/services/network_service/network_service.dart';
 
-Future<void> main() async {
-  await configureInjector();
+void main() async {
+  configureInjector();
   runApp(const MyApp());
 }
 
@@ -28,7 +28,8 @@ class TestWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        print((await getIt<NetworkService>().get(url: 'current')).data);
+        await getIt<WeatherRemoteDataSource>()
+            .getCurrentAndWholeDayWeatherForecast();
       },
       child: const ColoredBox(
         color: Colors.blue,
