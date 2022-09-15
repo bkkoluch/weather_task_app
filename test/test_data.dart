@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:weather_task_app/core/errors/exceptions.dart';
+import 'package:weather_task_app/core/errors/failures.dart';
 import 'package:weather_task_app/features/weather/domain/models/weather.dart';
 import 'package:weather_task_app/features/weather/domain/models/weather_condition.dart';
 import 'package:weather_task_app/features/weather/domain/models/weather_forecast.dart';
@@ -31,3 +32,4 @@ final RequestOptions tRequestOptions = RequestOptions(path: 'path');
 
 // Miscellaneous
 const ServerException tServerException = ServerException('ServerException');
+const ServerFailure tServerFailure = ServerFailure('ServerFailure');
