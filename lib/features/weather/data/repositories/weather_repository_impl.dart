@@ -16,14 +16,9 @@ class WeatherRepositoryImpl implements WeatherRepository {
   Future<Either<Failure, WeatherForecast>>
       getCurrentAndWholeDayWeatherForecast() async {
     try {
-      final WeatherForecast? weatherForecast =
+      final WeatherForecast weatherForecast =
           await _weatherRemoteDataSource.getCurrentAndWholeDayWeatherForecast();
-
-      if (weatherForecast == null) {
-        return const Left(NoWeatherForecastFailure());
-      } else {
-        return Right(weatherForecast);
-      }
+      return Right(weatherForecast);
     } on ServerException {
       return const Left(ServerFailure('getCurrentAndWholeDayWeatherForecast'));
     }

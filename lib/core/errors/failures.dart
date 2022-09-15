@@ -16,7 +16,3 @@ class ServerFailure extends Failure {
   const ServerFailure(String method)
       : super('Server failure occurred in $method');
 }
-
-class NoWeatherForecastFailure extends Failure {
-  const NoWeatherForecastFailure() : super('API returned no forecast');
-}
