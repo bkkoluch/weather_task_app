@@ -4,7 +4,6 @@ linter:
   rules:
     avoid_print: true
     avoid_relative_lib_imports: true
-    avoid_classes_with_only_static_members: true
     avoid_redundant_argument_values: true
     prefer_single_quotes: true
     prefer_const_constructors: true

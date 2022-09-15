@@ -20,6 +20,7 @@ WeatherForecast _$WeatherForecastFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$WeatherForecast {
+  WeatherLocation get location => throw _privateConstructorUsedError;
   @JsonKey(name: 'current')
   Weather get current => throw _privateConstructorUsedError;
   @JsonKey(name: 'forecast')
@@ -37,9 +38,11 @@ abstract class $WeatherForecastCopyWith<$Res> {
           WeatherForecast value, $Res Function(WeatherForecast) then) =
       _$WeatherForecastCopyWithImpl<$Res>;
   $Res call(
-      {@JsonKey(name: 'current') Weather current,
+      {WeatherLocation location,
+      @JsonKey(name: 'current') Weather current,
       @JsonKey(name: 'forecast') Forecast forecast});
 
+  $WeatherLocationCopyWith<$Res> get location;
   $WeatherCopyWith<$Res> get current;
   $ForecastCopyWith<$Res> get forecast;
 }
@@ -55,10 +58,15 @@ class _$WeatherForecastCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? location = freezed,
     Object? current = freezed,
     Object? forecast = freezed,
   }) {
     return _then(_value.copyWith(
+      location: location == freezed
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as WeatherLocation,
       current: current == freezed
           ? _value.current
           : current // ignore: cast_nullable_to_non_nullable
@@ -68,6 +76,13 @@ class _$WeatherForecastCopyWithImpl<$Res>
           : forecast // ignore: cast_nullable_to_non_nullable
               as Forecast,
     ));
+  }
+
+  @override
+  $WeatherLocationCopyWith<$Res> get location {
+    return $WeatherLocationCopyWith<$Res>(_value.location, (value) {
+      return _then(_value.copyWith(location: value));
+    });
   }
 
   @override
@@ -93,9 +108,12 @@ abstract class _$$_WeatherForecastCopyWith<$Res>
       __$$_WeatherForecastCopyWithImpl<$Res>;
   @override
   $Res call(
-      {@JsonKey(name: 'current') Weather current,
+      {WeatherLocation location,
+      @JsonKey(name: 'current') Weather current,
       @JsonKey(name: 'forecast') Forecast forecast});
 
+  @override
+  $WeatherLocationCopyWith<$Res> get location;
   @override
   $WeatherCopyWith<$Res> get current;
   @override
@@ -115,10 +133,15 @@ class __$$_WeatherForecastCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object? location = freezed,
     Object? current = freezed,
     Object? forecast = freezed,
   }) {
     return _then(_$_WeatherForecast(
+      location: location == freezed
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
+              as WeatherLocation,
       current: current == freezed
           ? _value.current
           : current // ignore: cast_nullable_to_non_nullable
@@ -135,13 +158,16 @@ class __$$_WeatherForecastCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_WeatherForecast extends _WeatherForecast {
   const _$_WeatherForecast(
-      {@JsonKey(name: 'current') required this.current,
+      {required this.location,
+      @JsonKey(name: 'current') required this.current,
       @JsonKey(name: 'forecast') required this.forecast})
       : super._();
 
   factory _$_WeatherForecast.fromJson(Map<String, dynamic> json) =>
       _$$_WeatherForecastFromJson(json);
 
+  @override
+  final WeatherLocation location;
   @override
   @JsonKey(name: 'current')
   final Weather current;
@@ -151,7 +177,7 @@ class _$_WeatherForecast extends _WeatherForecast {
 
   @override
   String toString() {
-    return 'WeatherForecast(current: $current, forecast: $forecast)';
+    return 'WeatherForecast(location: $location, current: $current, forecast: $forecast)';
   }
 
   @override
@@ -159,6 +185,7 @@ class _$_WeatherForecast extends _WeatherForecast {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_WeatherForecast &&
+            const DeepCollectionEquality().equals(other.location, location) &&
             const DeepCollectionEquality().equals(other.current, current) &&
             const DeepCollectionEquality().equals(other.forecast, forecast));
   }
@@ -167,6 +194,7 @@ class _$_WeatherForecast extends _WeatherForecast {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      const DeepCollectionEquality().hash(location),
       const DeepCollectionEquality().hash(current),
       const DeepCollectionEquality().hash(forecast));
 
@@ -185,7 +213,8 @@ class _$_WeatherForecast extends _WeatherForecast {
 
 abstract class _WeatherForecast extends WeatherForecast {
   const factory _WeatherForecast(
-          {@JsonKey(name: 'current') required final Weather current,
+          {required final WeatherLocation location,
+          @JsonKey(name: 'current') required final Weather current,
           @JsonKey(name: 'forecast') required final Forecast forecast}) =
       _$_WeatherForecast;
   const _WeatherForecast._() : super._();
@@ -193,6 +222,8 @@ abstract class _WeatherForecast extends WeatherForecast {
   factory _WeatherForecast.fromJson(Map<String, dynamic> json) =
       _$_WeatherForecast.fromJson;
 
+  @override
+  WeatherLocation get location;
   @override
   @JsonKey(name: 'current')
   Weather get current;

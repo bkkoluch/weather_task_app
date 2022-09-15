@@ -4,17 +4,28 @@ import 'package:weather_task_app/core/errors/failures.dart';
 import 'package:weather_task_app/features/weather/domain/models/weather.dart';
 import 'package:weather_task_app/features/weather/domain/models/weather_condition.dart';
 import 'package:weather_task_app/features/weather/domain/models/weather_forecast.dart';
+import 'package:weather_task_app/features/weather/domain/models/weather_location.dart';
 
 import 'test_json_data.dart';
 
 // Weather
-const WeatherForecast tWeatherForecast =
-    WeatherForecast(current: tWeather, forecast: tForecast);
+const WeatherForecast tWeatherForecast = WeatherForecast(
+  current: tWeather,
+  forecast: tForecast,
+  location: tWeatherLocation,
+);
 
 final WeatherForecast tWeatherForecastFromJSON =
     WeatherForecast.fromJson(tWeatherForecastJSON);
 
 const Forecast tForecast = Forecast(forecastDay: [tForecastDay]);
+
+const WeatherLocation tWeatherLocation = WeatherLocation(
+  name: '',
+  region: '',
+  country: '',
+  localTime: '',
+);
 
 const ForecastDay tForecastDay = ForecastDay(forecast: [tWeather, tWeather]);
 
