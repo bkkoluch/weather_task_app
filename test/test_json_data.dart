@@ -9,6 +9,8 @@ final Map<String, dynamic> tWeatherForecastJSON = {
   'forecast': {
     'forecastday': [
       {
+        'date': '2022-10-10',
+        'day': {'daily_will_it_rain': 1},
         'hour': [tWeatherJSON, tWeatherJSON]
       }
     ]
@@ -23,5 +25,6 @@ final Map<String, dynamic> tWeatherJSON = {
     'icon': 'icon',
   },
   'wind_kph': 12.3,
-  'cloud': 20
+  'cloud': 20,
+  'chance_of_rain': 30,
 };

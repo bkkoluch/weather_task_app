@@ -1,9 +1,18 @@
 # weather_task_app
 
+## How to run the project
+
+You have to have valid `keys.dart` file in `lib/secrets` directory.
+Get all dependencies by running command:
+`flutter pub get`
+
+## Tests
+To run all tests you can do so by following command:
+`flutter test`
+
 ## Getting Started
 
 The assignment is to create a (simple) weather app using the following free API: https://www.weatherapi.com
-
 
 Requirements:
 *      The app needs to show current heat, wind and cloud cover

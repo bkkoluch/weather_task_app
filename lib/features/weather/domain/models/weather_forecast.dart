@@ -26,7 +26,7 @@ class Forecast with _$Forecast {
   const Forecast._();
 
   const factory Forecast({
-    @JsonKey(name: 'forecastday') required List<ForecastDay> forecastDay,
+    @JsonKey(name: 'forecastday') required List<ForecastDay> forecastDays,
   }) = _Forecast;
 
   factory Forecast.fromJson(Map<String, dynamic> json) =>
@@ -38,7 +38,9 @@ class ForecastDay with _$ForecastDay {
   const ForecastDay._();
 
   const factory ForecastDay({
-    @JsonKey(name: 'hour') required List<Weather> forecast,
+    required String date,
+    @JsonKey(name: 'hour') required List<Weather> hourlyForecast,
+    @JsonKey(name: 'day') required DayWeather dayForecast,
   }) = _ForecastDay;
 
   factory ForecastDay.fromJson(Map<String, dynamic> json) =>

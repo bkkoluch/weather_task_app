@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:weather_task_app/secrets/keys.dart';
 import 'package:weather_task_app/services/network_service/network_service.dart';
 
@@ -16,7 +15,9 @@ class NetworkServiceImpl implements NetworkService {
     _dio = _createDio();
   }
 
-  Dio _createDio() => Dio()..interceptors.add(PrettyDioLogger());
+  Dio _createDio() => Dio();
+
+  // ..interceptors.add(PrettyDioLogger());
 
   @override
   Future<Response> get({required String url}) => _dio.get(
