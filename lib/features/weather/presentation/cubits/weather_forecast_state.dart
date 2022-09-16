@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:weather_task_app/features/weather/domain/models/weather.dart';
 import 'package:weather_task_app/features/weather/domain/models/weather_forecast.dart';
 
 part 'weather_forecast_state.freezed.dart';
@@ -17,6 +18,8 @@ class WeatherForecastState with _$WeatherForecastState {
   const factory WeatherForecastState({
     required WeatherForecastPageStatus status,
     WeatherForecast? weatherForecast,
+    List<Weather>? forecastForNextTwelveHours,
+    Weather? tomorrowForecast,
   }) = _WeatherForecastState;
 
   factory WeatherForecastState.initial() =>
@@ -25,5 +28,8 @@ class WeatherForecastState with _$WeatherForecastState {
   bool get isLoading => status == WeatherForecastPageStatus.loading;
 
   bool get isFullyLoaded =>
-      weatherForecast != null && status == WeatherForecastPageStatus.loaded;
+      weatherForecast != null &&
+      forecastForNextTwelveHours != null &&
+      tomorrowForecast != null &&
+      status == WeatherForecastPageStatus.loaded;
 }

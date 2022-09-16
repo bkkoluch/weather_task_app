@@ -30,11 +30,27 @@ const WeatherLocation tWeatherLocation = WeatherLocation(
 const ForecastDay tForecastDay = ForecastDay(forecast: [tWeather, tWeather]);
 
 const Weather tWeather = Weather(
-  temperatureC: 12,
+    temperatureC: 12,
+    condition: tWeatherCondition,
+    maxWindSpeedKm: 12.5,
+    cloudCover: 50,
+    date: tDateTimeString);
+
+const Weather tTomorrowWeather = Weather(
+  temperatureC: 13,
   condition: tWeatherCondition,
-  maxWindSpeedKm: 12.5,
-  cloudCover: 50,
+  maxWindSpeedKm: 13.5,
+  cloudCover: 51,
+  date: '2022-09-17 12:30',
 );
+
+final DateTime tCurrentTime = DateTime.parse(tDateTimeString);
+
+const String tDateTimeString = '2022-09-16 12:30';
+
+final Weather tNextHourWeather = tWeather.copyWith(date: '2022-09-16 13:30');
+final Weather tNextTwoHoursWeather =
+    tWeather.copyWith(date: '2022-09-16 14:30');
 
 const WeatherCondition tWeatherCondition =
     WeatherCondition(text: 'Cloudy', icon: 'icon');

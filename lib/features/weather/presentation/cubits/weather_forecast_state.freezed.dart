@@ -18,6 +18,9 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$WeatherForecastState {
   WeatherForecastPageStatus get status => throw _privateConstructorUsedError;
   WeatherForecast? get weatherForecast => throw _privateConstructorUsedError;
+  List<Weather>? get forecastForNextTwelveHours =>
+      throw _privateConstructorUsedError;
+  Weather? get tomorrowForecast => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $WeatherForecastStateCopyWith<WeatherForecastState> get copyWith =>
@@ -30,9 +33,13 @@ abstract class $WeatherForecastStateCopyWith<$Res> {
           $Res Function(WeatherForecastState) then) =
       _$WeatherForecastStateCopyWithImpl<$Res>;
   $Res call(
-      {WeatherForecastPageStatus status, WeatherForecast? weatherForecast});
+      {WeatherForecastPageStatus status,
+      WeatherForecast? weatherForecast,
+      List<Weather>? forecastForNextTwelveHours,
+      Weather? tomorrowForecast});
 
   $WeatherForecastCopyWith<$Res>? get weatherForecast;
+  $WeatherCopyWith<$Res>? get tomorrowForecast;
 }
 
 /// @nodoc
@@ -48,6 +55,8 @@ class _$WeatherForecastStateCopyWithImpl<$Res>
   $Res call({
     Object? status = freezed,
     Object? weatherForecast = freezed,
+    Object? forecastForNextTwelveHours = freezed,
+    Object? tomorrowForecast = freezed,
   }) {
     return _then(_value.copyWith(
       status: status == freezed
@@ -58,6 +67,14 @@ class _$WeatherForecastStateCopyWithImpl<$Res>
           ? _value.weatherForecast
           : weatherForecast // ignore: cast_nullable_to_non_nullable
               as WeatherForecast?,
+      forecastForNextTwelveHours: forecastForNextTwelveHours == freezed
+          ? _value.forecastForNextTwelveHours
+          : forecastForNextTwelveHours // ignore: cast_nullable_to_non_nullable
+              as List<Weather>?,
+      tomorrowForecast: tomorrowForecast == freezed
+          ? _value.tomorrowForecast
+          : tomorrowForecast // ignore: cast_nullable_to_non_nullable
+              as Weather?,
     ));
   }
 
@@ -71,6 +88,17 @@ class _$WeatherForecastStateCopyWithImpl<$Res>
       return _then(_value.copyWith(weatherForecast: value));
     });
   }
+
+  @override
+  $WeatherCopyWith<$Res>? get tomorrowForecast {
+    if (_value.tomorrowForecast == null) {
+      return null;
+    }
+
+    return $WeatherCopyWith<$Res>(_value.tomorrowForecast!, (value) {
+      return _then(_value.copyWith(tomorrowForecast: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -81,10 +109,15 @@ abstract class _$$_WeatherForecastStateCopyWith<$Res>
       __$$_WeatherForecastStateCopyWithImpl<$Res>;
   @override
   $Res call(
-      {WeatherForecastPageStatus status, WeatherForecast? weatherForecast});
+      {WeatherForecastPageStatus status,
+      WeatherForecast? weatherForecast,
+      List<Weather>? forecastForNextTwelveHours,
+      Weather? tomorrowForecast});
 
   @override
   $WeatherForecastCopyWith<$Res>? get weatherForecast;
+  @override
+  $WeatherCopyWith<$Res>? get tomorrowForecast;
 }
 
 /// @nodoc
@@ -102,6 +135,8 @@ class __$$_WeatherForecastStateCopyWithImpl<$Res>
   $Res call({
     Object? status = freezed,
     Object? weatherForecast = freezed,
+    Object? forecastForNextTwelveHours = freezed,
+    Object? tomorrowForecast = freezed,
   }) {
     return _then(_$_WeatherForecastState(
       status: status == freezed
@@ -112,6 +147,14 @@ class __$$_WeatherForecastStateCopyWithImpl<$Res>
           ? _value.weatherForecast
           : weatherForecast // ignore: cast_nullable_to_non_nullable
               as WeatherForecast?,
+      forecastForNextTwelveHours: forecastForNextTwelveHours == freezed
+          ? _value._forecastForNextTwelveHours
+          : forecastForNextTwelveHours // ignore: cast_nullable_to_non_nullable
+              as List<Weather>?,
+      tomorrowForecast: tomorrowForecast == freezed
+          ? _value.tomorrowForecast
+          : tomorrowForecast // ignore: cast_nullable_to_non_nullable
+              as Weather?,
     ));
   }
 }
@@ -119,17 +162,33 @@ class __$$_WeatherForecastStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_WeatherForecastState extends _WeatherForecastState {
-  const _$_WeatherForecastState({required this.status, this.weatherForecast})
-      : super._();
+  const _$_WeatherForecastState(
+      {required this.status,
+      this.weatherForecast,
+      final List<Weather>? forecastForNextTwelveHours,
+      this.tomorrowForecast})
+      : _forecastForNextTwelveHours = forecastForNextTwelveHours,
+        super._();
 
   @override
   final WeatherForecastPageStatus status;
   @override
   final WeatherForecast? weatherForecast;
+  final List<Weather>? _forecastForNextTwelveHours;
+  @override
+  List<Weather>? get forecastForNextTwelveHours {
+    final value = _forecastForNextTwelveHours;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  final Weather? tomorrowForecast;
 
   @override
   String toString() {
-    return 'WeatherForecastState(status: $status, weatherForecast: $weatherForecast)';
+    return 'WeatherForecastState(status: $status, weatherForecast: $weatherForecast, forecastForNextTwelveHours: $forecastForNextTwelveHours, tomorrowForecast: $tomorrowForecast)';
   }
 
   @override
@@ -139,14 +198,21 @@ class _$_WeatherForecastState extends _WeatherForecastState {
             other is _$_WeatherForecastState &&
             const DeepCollectionEquality().equals(other.status, status) &&
             const DeepCollectionEquality()
-                .equals(other.weatherForecast, weatherForecast));
+                .equals(other.weatherForecast, weatherForecast) &&
+            const DeepCollectionEquality().equals(
+                other._forecastForNextTwelveHours,
+                _forecastForNextTwelveHours) &&
+            const DeepCollectionEquality()
+                .equals(other.tomorrowForecast, tomorrowForecast));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(status),
-      const DeepCollectionEquality().hash(weatherForecast));
+      const DeepCollectionEquality().hash(weatherForecast),
+      const DeepCollectionEquality().hash(_forecastForNextTwelveHours),
+      const DeepCollectionEquality().hash(tomorrowForecast));
 
   @JsonKey(ignore: true)
   @override
@@ -158,13 +224,19 @@ class _$_WeatherForecastState extends _WeatherForecastState {
 abstract class _WeatherForecastState extends WeatherForecastState {
   const factory _WeatherForecastState(
       {required final WeatherForecastPageStatus status,
-      final WeatherForecast? weatherForecast}) = _$_WeatherForecastState;
+      final WeatherForecast? weatherForecast,
+      final List<Weather>? forecastForNextTwelveHours,
+      final Weather? tomorrowForecast}) = _$_WeatherForecastState;
   const _WeatherForecastState._() : super._();
 
   @override
   WeatherForecastPageStatus get status;
   @override
   WeatherForecast? get weatherForecast;
+  @override
+  List<Weather>? get forecastForNextTwelveHours;
+  @override
+  Weather? get tomorrowForecast;
   @override
   @JsonKey(ignore: true)
   _$$_WeatherForecastStateCopyWith<_$_WeatherForecastState> get copyWith =>

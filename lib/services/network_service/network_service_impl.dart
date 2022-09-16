@@ -8,6 +8,7 @@ import 'package:weather_task_app/services/network_service/network_service.dart';
 class NetworkServiceImpl implements NetworkService {
   final String _keyField = 'key';
   final String _qField = 'q';
+  final String _daysField = 'days';
 
   late final Dio _dio;
 
@@ -22,8 +23,9 @@ class NetworkServiceImpl implements NetworkService {
         '${Keys.apiUrl}/$url.json',
         queryParameters: {
           _keyField: Keys.apiKey,
-          // TODO: change hardcoded London if needed
-          _qField: 'London',
+          // TODO: change hardcoded Warsaw if needed
+          _qField: 'Warsaw',
+          _daysField: 2,
         },
       );
 }

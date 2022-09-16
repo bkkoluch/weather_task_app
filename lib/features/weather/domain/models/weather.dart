@@ -18,4 +18,6 @@ class Weather with _$Weather {
 
   factory Weather.fromJson(Map<String, dynamic> json) =>
       _$WeatherFromJson(json);
+
+  String? get hour => date?.split(' ')[1];
 }

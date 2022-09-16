@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:weather_task_app/features/weather/domain/models/weather.dart';
 import 'package:weather_task_app/features/weather/domain/use_cases/get_current_and_whole_day_weather_forecast_use_case.dart';
 import 'package:weather_task_app/features/weather/presentation/cubits/weather_forecast_cubit.dart';
 import 'package:weather_task_app/features/weather/presentation/cubits/weather_forecast_state.dart';
@@ -25,7 +26,19 @@ void main() {
   });
 
   group('WeatherForecastCubit', () {
+    final WeatherForecastCubit cubit = buildCubit();
+
     group('loadForecast', () {
+      final List<Weather> weatherForNextTwoDays =
+          cubit.getWeatherForNextTwoDays(
+              forecastsByDay: tWeatherForecast.forecast.forecastDay);
+      final DateTime currentTime = DateTime.now();
+
+      final Weather? tomorrowForecast = cubit.getForecastForTomorrow(
+        weatherForNextTwoDays: weatherForNextTwoDays,
+        currentTime: currentTime,
+      );
+
       blocTest<WeatherForecastCubit, WeatherForecastState>(
         'should emit WeatherForecastPageStatus.loaded with weather forecast on'
         'a successful call',
@@ -34,13 +47,18 @@ void main() {
             (_) async => const Right(tWeatherForecast),
           );
         },
-        build: buildCubit,
+        build: () => cubit,
         act: (cubit) => cubit.loadForecast(),
         expect: () => [
           initialState.copyWith(status: WeatherForecastPageStatus.loading),
           initialState.copyWith(
             status: WeatherForecastPageStatus.loaded,
             weatherForecast: tWeatherForecast,
+            forecastForNextTwelveHours: cubit.getForecastForNextTwelveHours(
+              weatherForNextTwoDays: weatherForNextTwoDays,
+              currentTime: currentTime,
+            ),
+            tomorrowForecast: tomorrowForecast,
           ),
         ],
         verify: (_) => [verify(() => useCase.call()).called(1)],
@@ -60,6 +78,91 @@ void main() {
           initialState.copyWith(status: WeatherForecastPageStatus.error),
         ],
         verify: (_) => [verify(() => useCase.call()).called(1)],
+      );
+    });
+
+    group('getWeatherForNextTwoDays', () {
+      test(
+        'should return List<Weather> for provided List<ForecastDay>',
+        () {
+          // Act
+          final result = cubit.getWeatherForNextTwoDays(
+              forecastsByDay: tForecast.forecastDay);
+
+          // Assert
+          expect(result, [tWeather, tWeather]);
+        },
+      );
+    });
+
+    group('getForecastForTomorrow', () {
+      test(
+        'should get forecast for tomorrow for provided weather list and current time',
+        () {
+          // Act
+          final result = cubit.getForecastForTomorrow(
+            weatherForNextTwoDays: [tWeather, tTomorrowWeather],
+            currentTime: tCurrentTime,
+          );
+
+          // Assert
+          expect(result, tTomorrowWeather);
+        },
+      );
+
+      test(
+        'should return null for empty weather list',
+        () {
+          // Act
+          final result = cubit.getForecastForTomorrow(
+            weatherForNextTwoDays: [],
+            currentTime: tCurrentTime,
+          );
+
+          // Assert
+          expect(result, null);
+        },
+      );
+
+      test(
+        'should return null for weather list not containing tomorrows weather',
+        () {
+          // Act
+          final result = cubit.getForecastForTomorrow(
+            weatherForNextTwoDays: [tWeather],
+            currentTime: tCurrentTime,
+          );
+
+          // Assert
+          expect(result, null);
+        },
+      );
+    });
+
+    group('getForecastForNextTwelveHours', () {
+      test(
+        'should return List<Weather> for next twelve hours',
+        () {
+          // Act
+          final result = cubit.getForecastForNextTwelveHours(
+            weatherForNextTwoDays: [
+              tWeather,
+              tNextHourWeather,
+              tNextTwoHoursWeather,
+              tTomorrowWeather,
+            ],
+            currentTime: tCurrentTime,
+          );
+
+          // Assert
+          expect(
+            result,
+            [
+              tNextHourWeather,
+              tNextTwoHoursWeather,
+            ],
+          );
+        },
       );
     });
   });

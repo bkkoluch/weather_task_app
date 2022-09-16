@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:weather_task_app/core/constants.dart';
 import 'package:weather_task_app/core/extensions/context_extensions.dart';
 import 'package:weather_task_app/core/strings/strings.dart';
-import 'package:weather_task_app/features/weather/domain/models/weather_forecast.dart';
-import 'package:weather_task_app/features/weather/domain/models/weather_location.dart';
 import 'package:weather_task_app/features/weather/presentation/cubits/weather_forecast_cubit.dart';
 import 'package:weather_task_app/features/weather/presentation/cubits/weather_forecast_state.dart';
-import 'package:weather_task_app/features/weather/presentation/widgets/weather_text.dart';
+import 'package:weather_task_app/features/weather/presentation/widgets/weather_today_tab.dart';
 import 'package:weather_task_app/services/injection_service/injection_service.dart';
 import 'package:weather_task_app/style/core_dimensions.dart';
 import 'package:weather_task_app/style/style_tokens.dart';
@@ -41,7 +38,7 @@ class _WeatherForecastPageState extends State<WeatherForecastPage> {
               if (state.isLoading) {
                 return const _LoadingState();
               } else if (state.isFullyLoaded) {
-                return _LoadedState(weatherForecast: state.weatherForecast!);
+                return _LoadedState(state: state);
               }
 
               return const SizedBox.shrink();
@@ -63,57 +60,38 @@ class _LoadingState extends StatelessWidget {
 }
 
 class _LoadedState extends StatelessWidget {
-  final WeatherForecast weatherForecast;
+  final WeatherForecastState state;
 
-  const _LoadedState({required this.weatherForecast, Key? key})
-      : super(key: key);
+  const _LoadedState({required this.state, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final WeatherLocation location = weatherForecast.location;
-
     return SizedBox(
       width: context.screenWidth,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          WeatherText.header(text: location.name),
-          SizedBox(height: CoreDimensions.paddingS),
-          WeatherText.subtitle(text: location.country),
-          SizedBox(height: CoreDimensions.paddingM),
-          WeatherText.paragraph(text: location.localTime),
-          SizedBox(height: CoreDimensions.paddingS),
-          Image.network(
-            '${Constants.httpHostString}${weatherForecast.current.condition.icon}',
-            scale: 0.5,
-            errorBuilder: (_, __, ___) => const SizedBox.shrink(),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              WeatherText.paragraph(text: weatherConditions),
-              SizedBox(height: CoreDimensions.paddingS),
-              WeatherText.paragraph(text: temperature),
-              SizedBox(height: CoreDimensions.paddingS),
-              WeatherText.paragraph(text: windSpeed),
-              SizedBox(height: CoreDimensions.paddingS),
-              WeatherText.paragraph(text: cloudCoverage),
-            ],
-          ),
-        ],
+      child: DefaultTabController(
+        length: 2,
+        child: Column(
+          children: [
+            SizedBox(height: context.screenHeight * 0.05),
+            const TabBar(
+              indicatorColor: StyleTokens.mainBlue,
+              tabs: [
+                Tab(text: todayTabText),
+                Tab(text: tomorrowTabText),
+              ],
+            ),
+            const SizedBox(height: CoreDimensions.paddingM),
+            Flexible(
+              child: TabBarView(
+                children: [
+                  WeatherTodayTab(state: state),
+                  const Icon(Icons.directions_bike),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
-
-  String get weatherConditions =>
-      '$weatherConditionsText${weatherForecast.current.condition.text}';
-
-  String get temperature =>
-      '$temperatureText${weatherForecast.current.temperatureC}$degreeCelsius';
-
-  String get windSpeed =>
-      '$windSpeedText${weatherForecast.current.maxWindSpeedKm.toStringAsFixed(0)} km/h';
-
-  String get cloudCoverage =>
-      '$cloudCoverageText${weatherForecast.current.cloudCover}%';
 }
