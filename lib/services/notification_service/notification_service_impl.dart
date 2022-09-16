@@ -15,6 +15,7 @@ class NotificationServiceImpl implements NotificationService {
   late final FlutterLocalNotificationsPlugin _notificationsPlugin;
 
   static const int _itMightRainNotificationId = 0;
+  static const String _defaultIconString = '@mipmap/ic_launcher';
 
   @override
   Future<void> init() async {
@@ -29,7 +30,7 @@ class NotificationServiceImpl implements NotificationService {
         IOSInitializationSettings();
 
     const AndroidInitializationSettings androidInitializationSettings =
-        AndroidInitializationSettings('');
+        AndroidInitializationSettings(_defaultIconString);
 
     const InitializationSettings initializationSettings =
         InitializationSettings(
@@ -39,7 +40,11 @@ class NotificationServiceImpl implements NotificationService {
 
     await _notificationsPlugin.initialize(initializationSettings);
 
-    _requestPermissionsForIOS();
+    if (Platform.isIOS) {
+      await _requestPermissionsForIOS();
+    } else if (Platform.isAndroid) {
+      await _requestPermissionsForAndroid();
+    }
   }
 
   @override
@@ -55,7 +60,15 @@ class NotificationServiceImpl implements NotificationService {
       itMightRainNotificationTitle,
       itMightRainNotificationBody,
       tz.TZDateTime.now(tz.local).add(durationToScheduleTheNotificationFor),
-      const NotificationDetails(),
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'channelId',
+          'channelName',
+          icon: _defaultIconString,
+          priority: Priority.max,
+          importance: Importance.max,
+        ),
+      ),
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       androidAllowWhileIdle: true,
@@ -78,16 +91,21 @@ class NotificationServiceImpl implements NotificationService {
     }
   }
 
-  void _requestPermissionsForIOS() {
-    if (Platform.isIOS) {
-      _notificationsPlugin
-          .resolvePlatformSpecificImplementation<
-              IOSFlutterLocalNotificationsPlugin>()
-          ?.requestPermissions(
-            alert: true,
-            badge: true,
-            sound: true,
-          );
-    }
+  Future<bool?>? _requestPermissionsForIOS() {
+    return _notificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>()
+        ?.requestPermissions(
+          alert: true,
+          badge: true,
+          sound: true,
+        );
+  }
+
+  Future<bool?>? _requestPermissionsForAndroid() {
+    return _notificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.requestPermission();
   }
 }
