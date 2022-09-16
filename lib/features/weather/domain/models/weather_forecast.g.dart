@@ -8,12 +8,15 @@ part of 'weather_forecast.dart';
 
 _$_WeatherForecast _$$_WeatherForecastFromJson(Map<String, dynamic> json) =>
     _$_WeatherForecast(
+      location:
+          WeatherLocation.fromJson(json['location'] as Map<String, dynamic>),
       current: Weather.fromJson(json['current'] as Map<String, dynamic>),
       forecast: Forecast.fromJson(json['forecast'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_WeatherForecastToJson(_$_WeatherForecast instance) =>
     <String, dynamic>{
+      'location': instance.location,
       'current': instance.current,
       'forecast': instance.forecast,
     };

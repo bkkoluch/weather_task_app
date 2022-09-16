@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:weather_task_app/features/weather/domain/models/weather.dart';
+import 'package:weather_task_app/features/weather/domain/models/weather_location.dart';
 
 part 'weather_forecast.freezed.dart';
 part 'weather_forecast.g.dart';
@@ -11,6 +12,7 @@ class WeatherForecast with _$WeatherForecast {
   const WeatherForecast._();
 
   const factory WeatherForecast({
+    required WeatherLocation location,
     @JsonKey(name: 'current') required Weather current,
     @JsonKey(name: 'forecast') required Forecast forecast,
   }) = _WeatherForecast;

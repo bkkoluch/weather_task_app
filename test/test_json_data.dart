@@ -1,4 +1,10 @@
 final Map<String, dynamic> tWeatherForecastJSON = {
+  'location': {
+    'name': '',
+    'region': '',
+    'country': '',
+    'localtime': '',
+  },
   'current': tWeatherJSON,
   'forecast': {
     'forecastday': [
