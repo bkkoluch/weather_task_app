@@ -29,13 +29,13 @@ void main() {
     final WeatherForecastCubit cubit = buildCubit();
 
     group('loadForecast', () {
-      final List<Weather> weatherForNextTwoDays =
-          cubit.getWeatherForNextTwoDays(
+      final List<Weather> weatherForNextThreeDays =
+          cubit.getWeatherForNextThreeDays(
               forecastsByDay: tWeatherForecast.forecast.forecastDay);
       final DateTime currentTime = DateTime.now();
 
       final Weather? tomorrowForecast = cubit.getForecastForTomorrow(
-        weatherForNextTwoDays: weatherForNextTwoDays,
+        weatherForNextThreeDays: weatherForNextThreeDays,
         currentTime: currentTime,
       );
 
@@ -54,11 +54,20 @@ void main() {
           initialState.copyWith(
             status: WeatherForecastPageStatus.loaded,
             weatherForecast: tWeatherForecast,
-            forecastForNextTwelveHours: cubit.getForecastForNextTwelveHours(
-              weatherForNextTwoDays: weatherForNextTwoDays,
-              currentTime: currentTime,
+            todayTabState: WeatherForecastTabState(
+              dayForecast: tWeatherForecast.current,
+              forecastForNextTwelveHours: cubit.getForecastForNextTwelveHours(
+                weatherForNextThreeDays: weatherForNextThreeDays,
+                currentTime: currentTime,
+              ),
             ),
-            tomorrowForecast: tomorrowForecast,
+            tomorrowTabState: WeatherForecastTabState(
+              dayForecast: tomorrowForecast,
+              forecastForNextTwelveHours: cubit.getForecastForNextTwelveHours(
+                weatherForNextThreeDays: weatherForNextThreeDays,
+                currentTime: cubit.parseWeatherDate(tomorrowForecast?.date),
+              ),
+            ),
           ),
         ],
         verify: (_) => [verify(() => useCase.call()).called(1)],
@@ -86,7 +95,7 @@ void main() {
         'should return List<Weather> for provided List<ForecastDay>',
         () {
           // Act
-          final result = cubit.getWeatherForNextTwoDays(
+          final result = cubit.getWeatherForNextThreeDays(
               forecastsByDay: tForecast.forecastDay);
 
           // Assert
@@ -101,7 +110,7 @@ void main() {
         () {
           // Act
           final result = cubit.getForecastForTomorrow(
-            weatherForNextTwoDays: [tWeather, tTomorrowWeather],
+            weatherForNextThreeDays: [tWeather, tTomorrowWeather],
             currentTime: tCurrentTime,
           );
 
@@ -115,7 +124,7 @@ void main() {
         () {
           // Act
           final result = cubit.getForecastForTomorrow(
-            weatherForNextTwoDays: [],
+            weatherForNextThreeDays: [],
             currentTime: tCurrentTime,
           );
 
@@ -129,7 +138,7 @@ void main() {
         () {
           // Act
           final result = cubit.getForecastForTomorrow(
-            weatherForNextTwoDays: [tWeather],
+            weatherForNextThreeDays: [tWeather],
             currentTime: tCurrentTime,
           );
 
@@ -145,7 +154,7 @@ void main() {
         () {
           // Act
           final result = cubit.getForecastForNextTwelveHours(
-            weatherForNextTwoDays: [
+            weatherForNextThreeDays: [
               tWeather,
               tNextHourWeather,
               tNextTwoHoursWeather,

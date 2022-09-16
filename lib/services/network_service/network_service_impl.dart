@@ -25,7 +25,7 @@ class NetworkServiceImpl implements NetworkService {
           _keyField: Keys.apiKey,
           // TODO: change hardcoded Warsaw if needed
           _qField: 'Warsaw',
-          _daysField: 2,
+          _daysField: 3,
         },
       );
 }

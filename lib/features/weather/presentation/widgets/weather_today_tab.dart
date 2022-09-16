@@ -11,10 +11,15 @@ import 'package:weather_task_app/features/weather/presentation/widgets/weather_t
 import 'package:weather_task_app/style/core_dimensions.dart';
 import 'package:weather_task_app/style/style_tokens.dart';
 
-class WeatherTodayTab extends StatelessWidget {
-  final WeatherForecastState state;
+class WeatherTab extends StatelessWidget {
+  final WeatherForecastTabState state;
+  final WeatherForecast weatherForecast;
 
-  const WeatherTodayTab({required this.state, Key? key}) : super(key: key);
+  const WeatherTab({
+    required this.state,
+    required this.weatherForecast,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,14 +29,16 @@ class WeatherTodayTab extends StatelessWidget {
         child: Column(
           children: [
             _WeatherCurrentForecastDescription(
-              weatherForecast: state.weatherForecast!,
+              weatherForecast: weatherForecast,
+              weather: state.dayForecast!,
             ),
             const SizedBox(height: CoreDimensions.paddingL),
             Container(
-                padding: const EdgeInsets.only(left: CoreDimensions.paddingM),
-                width: context.screenWidth,
-                child: WeatherText.paragraph(
-                    text: forecastForNextTwelveHoursText)),
+              padding: const EdgeInsets.only(left: CoreDimensions.paddingM),
+              width: context.screenWidth,
+              child:
+                  WeatherText.paragraph(text: forecastForNextTwelveHoursText),
+            ),
             const SizedBox(height: CoreDimensions.paddingS),
             _WeatherTwelveHoursHorizontalList(
               forecastForNextTwelveHours: state.forecastForNextTwelveHours!,
@@ -69,10 +76,13 @@ class _WeatherIcon extends StatelessWidget {
 
 class _WeatherCurrentForecastDescription extends StatelessWidget {
   final WeatherForecast weatherForecast;
+  final Weather weather;
 
-  const _WeatherCurrentForecastDescription(
-      {required this.weatherForecast, Key? key})
-      : super(key: key);
+  const _WeatherCurrentForecastDescription({
+    required this.weatherForecast,
+    required this.weather,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -84,36 +94,38 @@ class _WeatherCurrentForecastDescription extends StatelessWidget {
         const SizedBox(height: CoreDimensions.paddingS),
         WeatherText.subtitle(text: location.country),
         const SizedBox(height: CoreDimensions.paddingM),
-        WeatherText.paragraph(text: location.localTime),
+        WeatherText.paragraph(text: weather.date ?? location.localTime),
         const SizedBox(height: CoreDimensions.paddingS),
-        _WeatherIcon(iconUrl: weatherForecast.current.condition.icon),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            WeatherText.paragraph(text: weatherConditions),
-            const SizedBox(height: CoreDimensions.paddingS),
-            WeatherText.paragraph(text: temperature),
-            const SizedBox(height: CoreDimensions.paddingS),
-            WeatherText.paragraph(text: windSpeed),
-            const SizedBox(height: CoreDimensions.paddingS),
-            WeatherText.paragraph(text: cloudCoverage),
-          ],
+        _WeatherIcon(iconUrl: weather.condition.icon),
+        Padding(
+          padding: const EdgeInsets.only(left: CoreDimensions.paddingM),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              WeatherText.paragraph(text: weatherConditions),
+              const SizedBox(height: CoreDimensions.paddingS),
+              WeatherText.paragraph(text: temperature),
+              const SizedBox(height: CoreDimensions.paddingS),
+              WeatherText.paragraph(text: windSpeed),
+              const SizedBox(height: CoreDimensions.paddingS),
+              WeatherText.paragraph(text: cloudCoverage),
+            ],
+          ),
         )
       ],
     );
   }
 
   String get weatherConditions =>
-      '$weatherConditionsText${weatherForecast.current.condition.text}';
+      '$weatherConditionsText${weather.condition.text}';
 
   String get temperature =>
-      '$temperatureText${weatherForecast.current.temperatureC}$degreeCelsius';
+      '$temperatureText${weather.temperatureC}$degreeCelsius';
 
   String get windSpeed =>
-      '$windSpeedText${weatherForecast.current.maxWindSpeedKm.toStringAsFixed(0)} km/h';
+      '$windSpeedText${weather.maxWindSpeedKm.toStringAsFixed(0)} km/h';
 
-  String get cloudCoverage =>
-      '$cloudCoverageText${weatherForecast.current.cloudCover}%';
+  String get cloudCoverage => '$cloudCoverageText${weather.cloudCover}%';
 }
 
 class _WeatherTwelveHoursHorizontalList extends StatelessWidget {

@@ -84,8 +84,14 @@ class _LoadedState extends StatelessWidget {
             Flexible(
               child: TabBarView(
                 children: [
-                  WeatherTodayTab(state: state),
-                  const Icon(Icons.directions_bike),
+                  WeatherTab(
+                    state: state.todayTabState!,
+                    weatherForecast: state.weatherForecast!,
+                  ),
+                  WeatherTab(
+                    state: state.tomorrowTabState!,
+                    weatherForecast: state.weatherForecast!,
+                  ),
                 ],
               ),
             ),

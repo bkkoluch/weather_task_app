@@ -32,35 +32,47 @@ class WeatherForecastCubit extends Cubit<WeatherForecastState> {
     final List<ForecastDay> forecastsByDay =
         weatherForecast.forecast.forecastDay;
 
-    List<Weather> weatherForTwoDays =
-        getWeatherForNextTwoDays(forecastsByDay: forecastsByDay);
+    List<Weather> weatherForNextThreeDays =
+        getWeatherForNextThreeDays(forecastsByDay: forecastsByDay);
 
     final DateTime currentTime =
-        _parseWeatherDate(weatherForecast.location.localTime);
+        parseWeatherDate(weatherForecast.location.localTime);
 
     final Weather? tomorrowForecast = getForecastForTomorrow(
-      weatherForNextTwoDays: weatherForTwoDays,
+      weatherForNextThreeDays: weatherForNextThreeDays,
       currentTime: currentTime,
     );
 
-    final List<Weather> forecastForNextTwelveHours =
+    final List<Weather> forecastForNextTwelveHoursForToday =
         getForecastForNextTwelveHours(
-      weatherForNextTwoDays: weatherForTwoDays,
+      weatherForNextThreeDays: weatherForNextThreeDays,
       currentTime: currentTime,
+    );
+
+    final List<Weather> forecastForNextTwelveHoursForTomorrow =
+        getForecastForNextTwelveHours(
+      weatherForNextThreeDays: weatherForNextThreeDays,
+      currentTime: parseWeatherDate(tomorrowForecast?.date),
     );
 
     emit(
       state.copyWith(
-        tomorrowForecast: tomorrowForecast,
-        forecastForNextTwelveHours: forecastForNextTwelveHours,
-        status: WeatherForecastPageStatus.loaded,
         weatherForecast: weatherForecast,
+        todayTabState: WeatherForecastTabState(
+          dayForecast: weatherForecast.current,
+          forecastForNextTwelveHours: forecastForNextTwelveHoursForToday,
+        ),
+        tomorrowTabState: WeatherForecastTabState(
+          dayForecast: tomorrowForecast,
+          forecastForNextTwelveHours: forecastForNextTwelveHoursForTomorrow,
+        ),
+        status: WeatherForecastPageStatus.loaded,
       ),
     );
   }
 
   @visibleForTesting
-  List<Weather> getWeatherForNextTwoDays({
+  List<Weather> getWeatherForNextThreeDays({
     required List<ForecastDay> forecastsByDay,
   }) {
     List<Weather> weatherForTwoDays = List.empty(growable: true);
@@ -77,23 +89,23 @@ class WeatherForecastCubit extends Cubit<WeatherForecastState> {
 
   @visibleForTesting
   Weather? getForecastForTomorrow({
-    required List<Weather> weatherForNextTwoDays,
+    required List<Weather> weatherForNextThreeDays,
     required DateTime currentTime,
   }) {
-    return weatherForNextTwoDays.firstWhereOrNull((weather) =>
-        _parseWeatherDate(weather.date).hour == currentTime.hour &&
+    return weatherForNextThreeDays.firstWhereOrNull((weather) =>
+        parseWeatherDate(weather.date).hour == currentTime.hour &&
         (weather != state.weatherForecast?.current &&
-            _parseWeatherDate(weather.date).day != currentTime.day));
+            parseWeatherDate(weather.date).day != currentTime.day));
   }
 
   @visibleForTesting
   List<Weather> getForecastForNextTwelveHours({
-    required List<Weather> weatherForNextTwoDays,
+    required List<Weather> weatherForNextThreeDays,
     required DateTime currentTime,
   }) {
-    return weatherForNextTwoDays
+    return weatherForNextThreeDays
         .where((weather) {
-          final DateTime weatherDate = _parseWeatherDate(weather.date);
+          final DateTime weatherDate = parseWeatherDate(weather.date);
           return weatherDate.isAfter(currentTime) &&
               weatherDate.difference(currentTime).inHours <= 12;
         })
@@ -101,6 +113,7 @@ class WeatherForecastCubit extends Cubit<WeatherForecastState> {
         .toList();
   }
 
-  DateTime _parseWeatherDate(String? date) =>
+  @visibleForTesting
+  DateTime parseWeatherDate(String? date) =>
       DateTime.tryParse(date ?? '') ?? DateTime.now();
 }

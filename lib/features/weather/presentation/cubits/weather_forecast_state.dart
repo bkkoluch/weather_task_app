@@ -18,8 +18,8 @@ class WeatherForecastState with _$WeatherForecastState {
   const factory WeatherForecastState({
     required WeatherForecastPageStatus status,
     WeatherForecast? weatherForecast,
-    List<Weather>? forecastForNextTwelveHours,
-    Weather? tomorrowForecast,
+    WeatherForecastTabState? todayTabState,
+    WeatherForecastTabState? tomorrowTabState,
   }) = _WeatherForecastState;
 
   factory WeatherForecastState.initial() =>
@@ -28,8 +28,17 @@ class WeatherForecastState with _$WeatherForecastState {
   bool get isLoading => status == WeatherForecastPageStatus.loading;
 
   bool get isFullyLoaded =>
-      weatherForecast != null &&
-      forecastForNextTwelveHours != null &&
-      tomorrowForecast != null &&
+      todayTabState != null &&
+      tomorrowTabState != null &&
       status == WeatherForecastPageStatus.loaded;
+}
+
+@freezed
+class WeatherForecastTabState with _$WeatherForecastTabState {
+  const WeatherForecastTabState._();
+
+  const factory WeatherForecastTabState({
+    List<Weather>? forecastForNextTwelveHours,
+    Weather? dayForecast,
+  }) = _WeatherForecastTabState;
 }
