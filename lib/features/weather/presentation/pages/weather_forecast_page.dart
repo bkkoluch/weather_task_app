@@ -22,7 +22,10 @@ class _WeatherForecastPageState extends State<WeatherForecastPage> {
   @override
   void initState() {
     super.initState();
-    _cubit.loadForecast();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _cubit.loadForecast();
+    });
   }
 
   @override

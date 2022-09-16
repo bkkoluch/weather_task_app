@@ -13,6 +13,7 @@ _$_Weather _$$_WeatherFromJson(Map<String, dynamic> json) => _$_Weather(
           WeatherCondition.fromJson(json['condition'] as Map<String, dynamic>),
       maxWindSpeedKm: (json['wind_kph'] as num).toDouble(),
       cloudCover: json['cloud'] as int,
+      chanceOfRain: json['chance_of_rain'] as int? ?? 0,
     );
 
 Map<String, dynamic> _$$_WeatherToJson(_$_Weather instance) =>
@@ -22,4 +23,15 @@ Map<String, dynamic> _$$_WeatherToJson(_$_Weather instance) =>
       'condition': instance.condition,
       'wind_kph': instance.maxWindSpeedKm,
       'cloud': instance.cloudCover,
+      'chance_of_rain': instance.chanceOfRain,
+    };
+
+_$_DayWeather _$$_DayWeatherFromJson(Map<String, dynamic> json) =>
+    _$_DayWeather(
+      dailyChanceOfRain: json['daily_chance_of_rain'],
+    );
+
+Map<String, dynamic> _$$_DayWeatherToJson(_$_DayWeather instance) =>
+    <String, dynamic>{
+      'daily_chance_of_rain': instance.dailyChanceOfRain,
     };

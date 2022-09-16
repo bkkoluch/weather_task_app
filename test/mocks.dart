@@ -3,10 +3,13 @@ import 'package:weather_task_app/features/weather/data/data_sources/weather_remo
 import 'package:weather_task_app/features/weather/domain/repositories/weather_repository.dart';
 import 'package:weather_task_app/features/weather/domain/use_cases/get_current_and_whole_day_weather_forecast_use_case.dart';
 import 'package:weather_task_app/services/network_service/network_service.dart';
+import 'package:weather_task_app/services/notification_service/notification_service.dart';
 
 // Services
 
 class MockNetworkService extends Mock implements NetworkService {}
+
+class MockNotificationService extends Mock implements NotificationService {}
 
 // DataSources
 class MockWeatherRemoteDataSource extends Mock

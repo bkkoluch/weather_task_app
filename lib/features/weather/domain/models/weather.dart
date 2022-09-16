@@ -14,10 +14,24 @@ class Weather with _$Weather {
     required WeatherCondition condition,
     @JsonKey(name: 'wind_kph') required double maxWindSpeedKm,
     @JsonKey(name: 'cloud') required int cloudCover,
+    @JsonKey(name: 'chance_of_rain') @Default(0) int chanceOfRain,
   }) = _Weather;
 
   factory Weather.fromJson(Map<String, dynamic> json) =>
       _$WeatherFromJson(json);
 
   String? get hour => date?.split(' ')[1];
+}
+
+@freezed
+class DayWeather with _$DayWeather {
+  const DayWeather._();
+
+  const factory DayWeather(
+      {@JsonKey(name: 'daily_chance_of_rain') dailyChanceOfRain}) = _DayWeather;
+
+  factory DayWeather.fromJson(Map<String, dynamic> json) =>
+      _$DayWeatherFromJson(json);
+
+  bool get willItRain => dailyChanceOfRain >= 70;
 }

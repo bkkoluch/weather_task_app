@@ -243,7 +243,7 @@ Forecast _$ForecastFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Forecast {
   @JsonKey(name: 'forecastday')
-  List<ForecastDay> get forecastDay => throw _privateConstructorUsedError;
+  List<ForecastDay> get forecastDays => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -255,7 +255,7 @@ mixin _$Forecast {
 abstract class $ForecastCopyWith<$Res> {
   factory $ForecastCopyWith(Forecast value, $Res Function(Forecast) then) =
       _$ForecastCopyWithImpl<$Res>;
-  $Res call({@JsonKey(name: 'forecastday') List<ForecastDay> forecastDay});
+  $Res call({@JsonKey(name: 'forecastday') List<ForecastDay> forecastDays});
 }
 
 /// @nodoc
@@ -268,12 +268,12 @@ class _$ForecastCopyWithImpl<$Res> implements $ForecastCopyWith<$Res> {
 
   @override
   $Res call({
-    Object? forecastDay = freezed,
+    Object? forecastDays = freezed,
   }) {
     return _then(_value.copyWith(
-      forecastDay: forecastDay == freezed
-          ? _value.forecastDay
-          : forecastDay // ignore: cast_nullable_to_non_nullable
+      forecastDays: forecastDays == freezed
+          ? _value.forecastDays
+          : forecastDays // ignore: cast_nullable_to_non_nullable
               as List<ForecastDay>,
     ));
   }
@@ -285,7 +285,7 @@ abstract class _$$_ForecastCopyWith<$Res> implements $ForecastCopyWith<$Res> {
           _$_Forecast value, $Res Function(_$_Forecast) then) =
       __$$_ForecastCopyWithImpl<$Res>;
   @override
-  $Res call({@JsonKey(name: 'forecastday') List<ForecastDay> forecastDay});
+  $Res call({@JsonKey(name: 'forecastday') List<ForecastDay> forecastDays});
 }
 
 /// @nodoc
@@ -300,12 +300,12 @@ class __$$_ForecastCopyWithImpl<$Res> extends _$ForecastCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? forecastDay = freezed,
+    Object? forecastDays = freezed,
   }) {
     return _then(_$_Forecast(
-      forecastDay: forecastDay == freezed
-          ? _value._forecastDay
-          : forecastDay // ignore: cast_nullable_to_non_nullable
+      forecastDays: forecastDays == freezed
+          ? _value._forecastDays
+          : forecastDays // ignore: cast_nullable_to_non_nullable
               as List<ForecastDay>,
     ));
   }
@@ -316,24 +316,24 @@ class __$$_ForecastCopyWithImpl<$Res> extends _$ForecastCopyWithImpl<$Res>
 class _$_Forecast extends _Forecast {
   const _$_Forecast(
       {@JsonKey(name: 'forecastday')
-          required final List<ForecastDay> forecastDay})
-      : _forecastDay = forecastDay,
+          required final List<ForecastDay> forecastDays})
+      : _forecastDays = forecastDays,
         super._();
 
   factory _$_Forecast.fromJson(Map<String, dynamic> json) =>
       _$$_ForecastFromJson(json);
 
-  final List<ForecastDay> _forecastDay;
+  final List<ForecastDay> _forecastDays;
   @override
   @JsonKey(name: 'forecastday')
-  List<ForecastDay> get forecastDay {
+  List<ForecastDay> get forecastDays {
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_forecastDay);
+    return EqualUnmodifiableListView(_forecastDays);
   }
 
   @override
   String toString() {
-    return 'Forecast(forecastDay: $forecastDay)';
+    return 'Forecast(forecastDays: $forecastDays)';
   }
 
   @override
@@ -342,13 +342,13 @@ class _$_Forecast extends _Forecast {
         (other.runtimeType == runtimeType &&
             other is _$_Forecast &&
             const DeepCollectionEquality()
-                .equals(other._forecastDay, _forecastDay));
+                .equals(other._forecastDays, _forecastDays));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_forecastDay));
+      runtimeType, const DeepCollectionEquality().hash(_forecastDays));
 
   @JsonKey(ignore: true)
   @override
@@ -366,14 +366,14 @@ class _$_Forecast extends _Forecast {
 abstract class _Forecast extends Forecast {
   const factory _Forecast(
       {@JsonKey(name: 'forecastday')
-          required final List<ForecastDay> forecastDay}) = _$_Forecast;
+          required final List<ForecastDay> forecastDays}) = _$_Forecast;
   const _Forecast._() : super._();
 
   factory _Forecast.fromJson(Map<String, dynamic> json) = _$_Forecast.fromJson;
 
   @override
   @JsonKey(name: 'forecastday')
-  List<ForecastDay> get forecastDay;
+  List<ForecastDay> get forecastDays;
   @override
   @JsonKey(ignore: true)
   _$$_ForecastCopyWith<_$_Forecast> get copyWith =>
@@ -386,8 +386,11 @@ ForecastDay _$ForecastDayFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ForecastDay {
+  String get date => throw _privateConstructorUsedError;
   @JsonKey(name: 'hour')
-  List<Weather> get forecast => throw _privateConstructorUsedError;
+  List<Weather> get hourlyForecast => throw _privateConstructorUsedError;
+  @JsonKey(name: 'day')
+  DayWeather get dayForecast => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -400,7 +403,12 @@ abstract class $ForecastDayCopyWith<$Res> {
   factory $ForecastDayCopyWith(
           ForecastDay value, $Res Function(ForecastDay) then) =
       _$ForecastDayCopyWithImpl<$Res>;
-  $Res call({@JsonKey(name: 'hour') List<Weather> forecast});
+  $Res call(
+      {String date,
+      @JsonKey(name: 'hour') List<Weather> hourlyForecast,
+      @JsonKey(name: 'day') DayWeather dayForecast});
+
+  $DayWeatherCopyWith<$Res> get dayForecast;
 }
 
 /// @nodoc
@@ -413,14 +421,31 @@ class _$ForecastDayCopyWithImpl<$Res> implements $ForecastDayCopyWith<$Res> {
 
   @override
   $Res call({
-    Object? forecast = freezed,
+    Object? date = freezed,
+    Object? hourlyForecast = freezed,
+    Object? dayForecast = freezed,
   }) {
     return _then(_value.copyWith(
-      forecast: forecast == freezed
-          ? _value.forecast
-          : forecast // ignore: cast_nullable_to_non_nullable
+      date: date == freezed
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as String,
+      hourlyForecast: hourlyForecast == freezed
+          ? _value.hourlyForecast
+          : hourlyForecast // ignore: cast_nullable_to_non_nullable
               as List<Weather>,
+      dayForecast: dayForecast == freezed
+          ? _value.dayForecast
+          : dayForecast // ignore: cast_nullable_to_non_nullable
+              as DayWeather,
     ));
+  }
+
+  @override
+  $DayWeatherCopyWith<$Res> get dayForecast {
+    return $DayWeatherCopyWith<$Res>(_value.dayForecast, (value) {
+      return _then(_value.copyWith(dayForecast: value));
+    });
   }
 }
 
@@ -431,7 +456,13 @@ abstract class _$$_ForecastDayCopyWith<$Res>
           _$_ForecastDay value, $Res Function(_$_ForecastDay) then) =
       __$$_ForecastDayCopyWithImpl<$Res>;
   @override
-  $Res call({@JsonKey(name: 'hour') List<Weather> forecast});
+  $Res call(
+      {String date,
+      @JsonKey(name: 'hour') List<Weather> hourlyForecast,
+      @JsonKey(name: 'day') DayWeather dayForecast});
+
+  @override
+  $DayWeatherCopyWith<$Res> get dayForecast;
 }
 
 /// @nodoc
@@ -446,13 +477,23 @@ class __$$_ForecastDayCopyWithImpl<$Res> extends _$ForecastDayCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object? forecast = freezed,
+    Object? date = freezed,
+    Object? hourlyForecast = freezed,
+    Object? dayForecast = freezed,
   }) {
     return _then(_$_ForecastDay(
-      forecast: forecast == freezed
-          ? _value._forecast
-          : forecast // ignore: cast_nullable_to_non_nullable
+      date: date == freezed
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
+              as String,
+      hourlyForecast: hourlyForecast == freezed
+          ? _value._hourlyForecast
+          : hourlyForecast // ignore: cast_nullable_to_non_nullable
               as List<Weather>,
+      dayForecast: dayForecast == freezed
+          ? _value.dayForecast
+          : dayForecast // ignore: cast_nullable_to_non_nullable
+              as DayWeather,
     ));
   }
 }
@@ -461,24 +502,32 @@ class __$$_ForecastDayCopyWithImpl<$Res> extends _$ForecastDayCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ForecastDay extends _ForecastDay {
   const _$_ForecastDay(
-      {@JsonKey(name: 'hour') required final List<Weather> forecast})
-      : _forecast = forecast,
+      {required this.date,
+      @JsonKey(name: 'hour') required final List<Weather> hourlyForecast,
+      @JsonKey(name: 'day') required this.dayForecast})
+      : _hourlyForecast = hourlyForecast,
         super._();
 
   factory _$_ForecastDay.fromJson(Map<String, dynamic> json) =>
       _$$_ForecastDayFromJson(json);
 
-  final List<Weather> _forecast;
+  @override
+  final String date;
+  final List<Weather> _hourlyForecast;
   @override
   @JsonKey(name: 'hour')
-  List<Weather> get forecast {
+  List<Weather> get hourlyForecast {
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_forecast);
+    return EqualUnmodifiableListView(_hourlyForecast);
   }
 
   @override
+  @JsonKey(name: 'day')
+  final DayWeather dayForecast;
+
+  @override
   String toString() {
-    return 'ForecastDay(forecast: $forecast)';
+    return 'ForecastDay(date: $date, hourlyForecast: $hourlyForecast, dayForecast: $dayForecast)';
   }
 
   @override
@@ -486,13 +535,20 @@ class _$_ForecastDay extends _ForecastDay {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ForecastDay &&
-            const DeepCollectionEquality().equals(other._forecast, _forecast));
+            const DeepCollectionEquality().equals(other.date, date) &&
+            const DeepCollectionEquality()
+                .equals(other._hourlyForecast, _hourlyForecast) &&
+            const DeepCollectionEquality()
+                .equals(other.dayForecast, dayForecast));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_forecast));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(date),
+      const DeepCollectionEquality().hash(_hourlyForecast),
+      const DeepCollectionEquality().hash(dayForecast));
 
   @JsonKey(ignore: true)
   @override
@@ -509,7 +565,9 @@ class _$_ForecastDay extends _ForecastDay {
 
 abstract class _ForecastDay extends ForecastDay {
   const factory _ForecastDay(
-          {@JsonKey(name: 'hour') required final List<Weather> forecast}) =
+          {required final String date,
+          @JsonKey(name: 'hour') required final List<Weather> hourlyForecast,
+          @JsonKey(name: 'day') required final DayWeather dayForecast}) =
       _$_ForecastDay;
   const _ForecastDay._() : super._();
 
@@ -517,8 +575,13 @@ abstract class _ForecastDay extends ForecastDay {
       _$_ForecastDay.fromJson;
 
   @override
+  String get date;
+  @override
   @JsonKey(name: 'hour')
-  List<Weather> get forecast;
+  List<Weather> get hourlyForecast;
+  @override
+  @JsonKey(name: 'day')
+  DayWeather get dayForecast;
   @override
   @JsonKey(ignore: true)
   _$$_ForecastDayCopyWith<_$_ForecastDay> get copyWith =>
