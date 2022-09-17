@@ -11,3 +11,5 @@ const degreeCelsius = '°C';
 const itMightRainNotificationTitle = 'It might rain! 🌧️';
 const itMightRainNotificationBody =
     'When going out, remember to take your umbrella with you!';
+const kilometersPerHourUnit = 'km/h';
+const percentSign = '%';

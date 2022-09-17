@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import 'package:weather_task_app/core/constants.dart';
 import 'package:weather_task_app/core/extensions/context_extensions.dart';
 import 'package:weather_task_app/core/strings/strings.dart';
@@ -24,36 +25,32 @@ class WeatherTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: SizedBox(
-        height: context.screenHeight,
-        child: Column(
-          children: [
-            _WeatherCurrentForecastDescription(
-              weatherForecast: weatherForecast,
-              weather: state.dayForecast!,
-            ),
-            const SizedBox(height: CoreDimensions.paddingL),
-            Container(
-              padding: const EdgeInsets.only(left: CoreDimensions.paddingM),
+      child: Column(
+        children: [
+          _WeatherCurrentForecastDescription(
+            weatherForecast: weatherForecast,
+            weather: state.dayForecast!,
+          ),
+          const SizedBox(height: CoreDimensions.paddingL),
+          Container(
+            padding: const EdgeInsets.only(left: CoreDimensions.paddingM),
+            width: context.screenWidth,
+            child: WeatherText.paragraph(text: forecastForNextTwelveHoursText),
+          ),
+          const SizedBox(height: CoreDimensions.paddingS),
+          _WeatherTwelveHoursHorizontalList(
+            forecastForNextTwelveHours: state.forecastForNextTwelveHours!,
+          ),
+          const SizedBox(height: CoreDimensions.paddingL),
+          Container(
               width: context.screenWidth,
-              child:
-                  WeatherText.paragraph(text: forecastForNextTwelveHoursText),
-            ),
-            const SizedBox(height: CoreDimensions.paddingS),
-            _WeatherTwelveHoursHorizontalList(
-              forecastForNextTwelveHours: state.forecastForNextTwelveHours!,
-            ),
-            const SizedBox(height: CoreDimensions.paddingL),
-            Container(
-                width: context.screenWidth,
-                padding: const EdgeInsets.only(left: CoreDimensions.paddingM),
-                child: WeatherText.paragraph(
-                    text: forecastForNextTwelveHoursBarChartText)),
-            WeatherTemperatureGraph(
-              weatherList: state.forecastForNextTwelveHours!,
-            ),
-          ],
-        ),
+              padding: const EdgeInsets.only(left: CoreDimensions.paddingM),
+              child: WeatherText.paragraph(
+                  text: forecastForNextTwelveHoursBarChartText)),
+          WeatherTemperatureGraph(
+            weatherList: state.forecastForNextTwelveHours!,
+          ),
+        ],
       ),
     );
   }
@@ -66,10 +63,10 @@ class _WeatherIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.network(
-      '${Constants.httpHostString}$iconUrl',
-      scale: 0.5,
-      errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+    return CachedNetworkImage(
+      imageUrl: '${Constants.httpHostString}$iconUrl',
+      placeholder: (_, __) => const CircularProgressIndicator(),
+      errorWidget: (_, __, ___) => const SizedBox.shrink(),
     );
   }
 }
@@ -123,9 +120,10 @@ class _WeatherCurrentForecastDescription extends StatelessWidget {
       '$temperatureText${weather.temperatureC}$degreeCelsius';
 
   String get windSpeed =>
-      '$windSpeedText${weather.maxWindSpeedKm.toStringAsFixed(0)} km/h';
+      '$windSpeedText${weather.maxWindSpeedKm.toStringAsFixed(0)} $kilometersPerHourUnit';
 
-  String get cloudCoverage => '$cloudCoverageText${weather.cloudCover}%';
+  String get cloudCoverage =>
+      '$cloudCoverageText${weather.cloudCover}$percentSign';
 }
 
 class _WeatherTwelveHoursHorizontalList extends StatelessWidget {

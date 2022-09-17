@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_task_app/style/style_tokens.dart';
 
 class WeatherText extends StatelessWidget {
   final String text;
@@ -26,7 +27,7 @@ class WeatherText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: TextStyle(color: Colors.white, fontSize: fontSize),
+      style: TextStyle(color: StyleTokens.mainWhite, fontSize: fontSize),
     );
   }
 }

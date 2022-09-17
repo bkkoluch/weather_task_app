@@ -17,6 +17,8 @@ class NetworkServiceImpl implements NetworkService {
 
   Dio _createDio() => Dio();
 
+  // Uncomment to log responses/requests, commented out as
+  // it clutters the logs significantly
   // ..interceptors.add(PrettyDioLogger());
 
   @override
