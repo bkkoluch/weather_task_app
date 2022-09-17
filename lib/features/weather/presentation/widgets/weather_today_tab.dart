@@ -56,17 +56,65 @@ class WeatherTab extends StatelessWidget {
   }
 }
 
-class _WeatherIcon extends StatelessWidget {
+class _WeatherIcon extends StatefulWidget {
   final String iconUrl;
 
   const _WeatherIcon({required this.iconUrl, Key? key}) : super(key: key);
 
   @override
+  State<_WeatherIcon> createState() => _WeatherIconState();
+}
+
+class _WeatherIconState extends State<_WeatherIcon>
+    with SingleTickerProviderStateMixin {
+  late AnimationController animationController;
+  late Animation<double> verticalFloatAnimation;
+  late Animation<double> horizontalFloatAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+    verticalFloatAnimation = Tween<double>(begin: 0, end: 5).animate(
+      CurvedAnimation(
+        parent: animationController,
+        curve: const Interval(0, 1, curve: Curves.easeInOut),
+      ),
+    );
+    horizontalFloatAnimation = Tween<double>(begin: 3, end: -3).animate(
+      CurvedAnimation(
+        parent: animationController,
+        curve: const Interval(0.3, 1, curve: Curves.easeInOut),
+      ),
+    );
+    animationController.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return CachedNetworkImage(
-      imageUrl: '${Constants.httpHostString}$iconUrl',
-      placeholder: (_, __) => const CircularProgressIndicator(),
-      errorWidget: (_, __, ___) => const SizedBox.shrink(),
+    return AnimatedBuilder(
+      animation: animationController,
+      builder: (_, child) {
+        return Transform.translate(
+          offset: Offset(
+              horizontalFloatAnimation.value, verticalFloatAnimation.value),
+          child: child!,
+        );
+      },
+      child: CachedNetworkImage(
+        imageUrl: '${Constants.httpHostString}${widget.iconUrl}',
+        placeholder: (_, __) => const CircularProgressIndicator(),
+        errorWidget: (_, __, ___) => const SizedBox.shrink(),
+      ),
     );
   }
 }
