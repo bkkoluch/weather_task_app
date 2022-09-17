@@ -4,6 +4,7 @@ import 'package:weather_task_app/core/extensions/context_extensions.dart';
 import 'package:weather_task_app/core/strings/strings.dart';
 import 'package:weather_task_app/features/weather/presentation/cubits/weather_forecast_cubit.dart';
 import 'package:weather_task_app/features/weather/presentation/cubits/weather_forecast_state.dart';
+import 'package:weather_task_app/features/weather/presentation/widgets/weather_text.dart';
 import 'package:weather_task_app/features/weather/presentation/widgets/weather_today_tab.dart';
 import 'package:weather_task_app/services/injection_service/injection_service.dart';
 import 'package:weather_task_app/style/core_dimensions.dart';
@@ -42,6 +43,8 @@ class _WeatherForecastPageState extends State<WeatherForecastPage> {
                 return const _LoadingState();
               } else if (state.isFullyLoaded) {
                 return _LoadedState(state: state);
+              } else if (state.isError) {
+                return _ErrorState(onRetryPressed: _cubit.loadForecast);
               }
 
               return const SizedBox.shrink();
@@ -100,6 +103,32 @@ class _LoadedState extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ErrorState extends StatelessWidget {
+  final VoidCallback onRetryPressed;
+
+  const _ErrorState({required this.onRetryPressed, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(CoreDimensions.paddingL),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          WeatherText.paragraph(text: weatherForecastPageErrorText),
+          const SizedBox(height: CoreDimensions.paddingM),
+          ElevatedButton(
+            onPressed: onRetryPressed,
+            child: WeatherText.subtitle(
+              text: weatherForecastPageRetryButtonText,
+            ),
+          ),
+        ],
       ),
     );
   }

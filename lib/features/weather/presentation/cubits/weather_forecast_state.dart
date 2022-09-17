@@ -31,6 +31,8 @@ class WeatherForecastState with _$WeatherForecastState {
       todayTabState != null &&
       tomorrowTabState != null &&
       status == WeatherForecastPageStatus.loaded;
+
+  bool get isError => status == WeatherForecastPageStatus.error;
 }
 
 @freezed

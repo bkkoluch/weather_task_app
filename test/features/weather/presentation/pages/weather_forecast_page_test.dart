@@ -73,7 +73,6 @@ void main() {
     await widgetTester.pumpWidget(testableWidget);
     await widgetTester.pump();
 
-    expect(find.byType(CircularProgressIndicator), findsNothing);
     expect(find.byType(DefaultTabController), findsOneWidget);
     expect(find.text(todayTabText), findsOneWidget);
     expect(find.text(tomorrowTabText), findsOneWidget);
@@ -96,7 +95,9 @@ void main() {
     await widgetTester.pumpWidget(testableWidget);
     await widgetTester.pump();
 
-    expect(find.byType(SizedBox), findsOneWidget);
+    expect(find.byType(ElevatedButton), findsOneWidget);
+    expect(find.text(weatherForecastPageErrorText), findsOneWidget);
+    expect(find.text(weatherForecastPageRetryButtonText), findsOneWidget);
     expect(find.byType(CircularProgressIndicator), findsNothing);
     expect(find.byType(DefaultTabController), findsNothing);
     expect(find.text(todayTabText), findsNothing);
