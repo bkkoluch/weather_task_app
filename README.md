@@ -1,5 +1,8 @@
 # weather_task_app
 
+## Basic project showcase:
+https://user-images.githubusercontent.com/58911502/190852385-eb5adb6c-e43e-469f-b7cb-f3f6126284af.mov
+
 ## How to run the project
 
 You have to have valid `keys.dart` file in `lib/secrets` directory.
