@@ -29,6 +29,6 @@ Extra points for showing a notification on device at 8 in the morning if it is g
 
 ### Technical side:
 
-Needs to be implementing using bloc architecture from the flutter_bloc package
+Needs to be implemented using bloc architecture from the flutter_bloc package
 
 Extra points for adding tests
