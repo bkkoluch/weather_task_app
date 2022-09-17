@@ -38,7 +38,7 @@ const Forecast tMultipleForecastDaysForecast =
 final Forecast tNoRainForecast = Forecast(forecastDays: [tNoRainForecastDay]);
 
 const WeatherLocation tWeatherLocation = WeatherLocation(
-  name: '',
+  name: 'some location name',
   region: '',
   country: '',
   localTime: '',

@@ -18,6 +18,10 @@ class WeatherTemperatureGraph extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (weatherList.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
     return Container(
       color: StyleTokens.mainBlueTenPercent,
       padding: const EdgeInsets.symmetric(horizontal: CoreDimensions.paddingSM),
@@ -36,7 +40,9 @@ class WeatherTemperatureGraph extends StatelessWidget {
                 .toList(),
           ),
           const Positioned(
-              bottom: CoreDimensions.paddingM, child: _GraphLine()),
+            bottom: CoreDimensions.paddingM,
+            child: _GraphLine(),
+          ),
         ],
       ),
     );
@@ -88,7 +94,7 @@ class _GraphLine extends StatelessWidget {
     return Container(
       height: 1,
       width: context.screenWidth,
-      color: Colors.white,
+      color: StyleTokens.mainWhite,
     );
   }
 }

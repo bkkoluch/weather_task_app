@@ -11,3 +11,8 @@ const degreeCelsius = '°C';
 const itMightRainNotificationTitle = 'It might rain! 🌧️';
 const itMightRainNotificationBody =
     'When going out, remember to take your umbrella with you!';
+const kilometersPerHourUnit = 'km/h';
+const percentSign = '%';
+const weatherForecastPageErrorText =
+    'Error occurred, please make sure you are connected to the internet and try again by pressing below button';
+const weatherForecastPageRetryButtonText = 'Retry';
