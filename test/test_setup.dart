@@ -6,6 +6,7 @@ import 'test_data.dart';
 
 void baseSetup() {
   registerFallbackValue(tDuration);
+  registerFallbackValue(tUseCaseParams);
   tz.initializeTimeZones();
 }
 

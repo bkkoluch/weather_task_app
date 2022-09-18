@@ -29,8 +29,6 @@ mixin _$Weather {
   double get maxWindSpeedKm => throw _privateConstructorUsedError;
   @JsonKey(name: 'cloud')
   int get cloudCover => throw _privateConstructorUsedError;
-  @JsonKey(name: 'chance_of_rain')
-  int get chanceOfRain => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -46,8 +44,7 @@ abstract class $WeatherCopyWith<$Res> {
       @JsonKey(name: 'temp_c') double temperatureC,
       WeatherCondition condition,
       @JsonKey(name: 'wind_kph') double maxWindSpeedKm,
-      @JsonKey(name: 'cloud') int cloudCover,
-      @JsonKey(name: 'chance_of_rain') int chanceOfRain});
+      @JsonKey(name: 'cloud') int cloudCover});
 
   $WeatherConditionCopyWith<$Res> get condition;
 }
@@ -67,7 +64,6 @@ class _$WeatherCopyWithImpl<$Res> implements $WeatherCopyWith<$Res> {
     Object? condition = freezed,
     Object? maxWindSpeedKm = freezed,
     Object? cloudCover = freezed,
-    Object? chanceOfRain = freezed,
   }) {
     return _then(_value.copyWith(
       date: date == freezed
@@ -89,10 +85,6 @@ class _$WeatherCopyWithImpl<$Res> implements $WeatherCopyWith<$Res> {
       cloudCover: cloudCover == freezed
           ? _value.cloudCover
           : cloudCover // ignore: cast_nullable_to_non_nullable
-              as int,
-      chanceOfRain: chanceOfRain == freezed
-          ? _value.chanceOfRain
-          : chanceOfRain // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -116,8 +108,7 @@ abstract class _$$_WeatherCopyWith<$Res> implements $WeatherCopyWith<$Res> {
       @JsonKey(name: 'temp_c') double temperatureC,
       WeatherCondition condition,
       @JsonKey(name: 'wind_kph') double maxWindSpeedKm,
-      @JsonKey(name: 'cloud') int cloudCover,
-      @JsonKey(name: 'chance_of_rain') int chanceOfRain});
+      @JsonKey(name: 'cloud') int cloudCover});
 
   @override
   $WeatherConditionCopyWith<$Res> get condition;
@@ -139,7 +130,6 @@ class __$$_WeatherCopyWithImpl<$Res> extends _$WeatherCopyWithImpl<$Res>
     Object? condition = freezed,
     Object? maxWindSpeedKm = freezed,
     Object? cloudCover = freezed,
-    Object? chanceOfRain = freezed,
   }) {
     return _then(_$_Weather(
       date: date == freezed
@@ -162,10 +152,6 @@ class __$$_WeatherCopyWithImpl<$Res> extends _$WeatherCopyWithImpl<$Res>
           ? _value.cloudCover
           : cloudCover // ignore: cast_nullable_to_non_nullable
               as int,
-      chanceOfRain: chanceOfRain == freezed
-          ? _value.chanceOfRain
-          : chanceOfRain // ignore: cast_nullable_to_non_nullable
-              as int,
     ));
   }
 }
@@ -178,8 +164,7 @@ class _$_Weather extends _Weather {
       @JsonKey(name: 'temp_c') required this.temperatureC,
       required this.condition,
       @JsonKey(name: 'wind_kph') required this.maxWindSpeedKm,
-      @JsonKey(name: 'cloud') required this.cloudCover,
-      @JsonKey(name: 'chance_of_rain') this.chanceOfRain = 0})
+      @JsonKey(name: 'cloud') required this.cloudCover})
       : super._();
 
   factory _$_Weather.fromJson(Map<String, dynamic> json) =>
@@ -199,13 +184,10 @@ class _$_Weather extends _Weather {
   @override
   @JsonKey(name: 'cloud')
   final int cloudCover;
-  @override
-  @JsonKey(name: 'chance_of_rain')
-  final int chanceOfRain;
 
   @override
   String toString() {
-    return 'Weather(date: $date, temperatureC: $temperatureC, condition: $condition, maxWindSpeedKm: $maxWindSpeedKm, cloudCover: $cloudCover, chanceOfRain: $chanceOfRain)';
+    return 'Weather(date: $date, temperatureC: $temperatureC, condition: $condition, maxWindSpeedKm: $maxWindSpeedKm, cloudCover: $cloudCover)';
   }
 
   @override
@@ -220,9 +202,7 @@ class _$_Weather extends _Weather {
             const DeepCollectionEquality()
                 .equals(other.maxWindSpeedKm, maxWindSpeedKm) &&
             const DeepCollectionEquality()
-                .equals(other.cloudCover, cloudCover) &&
-            const DeepCollectionEquality()
-                .equals(other.chanceOfRain, chanceOfRain));
+                .equals(other.cloudCover, cloudCover));
   }
 
   @JsonKey(ignore: true)
@@ -233,8 +213,7 @@ class _$_Weather extends _Weather {
       const DeepCollectionEquality().hash(temperatureC),
       const DeepCollectionEquality().hash(condition),
       const DeepCollectionEquality().hash(maxWindSpeedKm),
-      const DeepCollectionEquality().hash(cloudCover),
-      const DeepCollectionEquality().hash(chanceOfRain));
+      const DeepCollectionEquality().hash(cloudCover));
 
   @JsonKey(ignore: true)
   @override
@@ -255,8 +234,7 @@ abstract class _Weather extends Weather {
       @JsonKey(name: 'temp_c') required final double temperatureC,
       required final WeatherCondition condition,
       @JsonKey(name: 'wind_kph') required final double maxWindSpeedKm,
-      @JsonKey(name: 'cloud') required final int cloudCover,
-      @JsonKey(name: 'chance_of_rain') final int chanceOfRain}) = _$_Weather;
+      @JsonKey(name: 'cloud') required final int cloudCover}) = _$_Weather;
   const _Weather._() : super._();
 
   factory _Weather.fromJson(Map<String, dynamic> json) = _$_Weather.fromJson;
@@ -275,9 +253,6 @@ abstract class _Weather extends Weather {
   @override
   @JsonKey(name: 'cloud')
   int get cloudCover;
-  @override
-  @JsonKey(name: 'chance_of_rain')
-  int get chanceOfRain;
   @override
   @JsonKey(ignore: true)
   _$$_WeatherCopyWith<_$_Weather> get copyWith =>

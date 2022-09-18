@@ -1,15 +1,20 @@
 import 'package:bloc/bloc.dart';
 import 'package:collection/collection.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:injectable/injectable.dart';
 import 'package:timezone/timezone.dart' as tz;
+import 'package:weather_task_app/core/errors/failures.dart';
 import 'package:weather_task_app/core/logger.dart';
 import 'package:weather_task_app/features/weather/domain/models/weather.dart';
 import 'package:weather_task_app/features/weather/domain/models/weather_forecast.dart';
-import 'package:weather_task_app/features/weather/domain/use_cases/get_current_and_whole_day_weather_forecast_use_case.dart';
+import 'package:weather_task_app/features/weather/domain/use_cases/get_current_and_future_days_forecast_use_case.dart';
 import 'package:weather_task_app/features/weather/presentation/cubits/weather_forecast_state.dart';
 import 'package:weather_task_app/services/injection_service/injection_service.dart';
 import 'package:weather_task_app/services/notification_service/notification_service.dart';
+
+const int _defaultDaysToFetch = 3;
+const String _defaultCityToFetchForecastFor = 'Rome';
 
 @injectable
 class WeatherForecastCubit extends Cubit<WeatherForecastState> {
@@ -18,20 +23,27 @@ class WeatherForecastCubit extends Cubit<WeatherForecastState> {
   Future<void> loadForecast() async {
     emit(state.copyWith(status: WeatherForecastPageStatus.loading));
 
-    final result =
-        await getIt<GetCurrentAndWholeDayWeatherForecastUseCase>().call();
+    final Either<Failure, WeatherForecast> result =
+        await getIt<GetCurrentAndFutureDaysForecastUseCase>().call(
+      const GetCurrentAndFutureDaysForecastUseCaseParams(
+        days: _defaultDaysToFetch,
+        city: _defaultCityToFetchForecastFor,
+      ),
+    );
 
     result.fold(
       (_) {
         emit(state.copyWith(status: WeatherForecastPageStatus.error));
       },
       (WeatherForecast weatherForecast) async {
-        await _emitNextTwelveHoursForecast(weatherForecast);
+        await _emitFutureForecastAndScheduleNotificationIfNeeded(
+          weatherForecast,
+        );
       },
     );
   }
 
-  Future<void> _emitNextTwelveHoursForecast(
+  Future<void> _emitFutureForecastAndScheduleNotificationIfNeeded(
       WeatherForecast weatherForecast) async {
     final List<ForecastDay> forecastsByDay =
         weatherForecast.forecast.forecastDays;
@@ -88,7 +100,7 @@ class WeatherForecastCubit extends Cubit<WeatherForecastState> {
     // And not to run that task only on app launch, I could make use of
     // a package to run it periodically using for example https://pub.dev/packages/workmanager
     // to schedule those checks periodically
-    await scheduleNotificationsIfNeeded(
+    await scheduleNotificationIfNeeded(
       weatherForecast: weatherForecast,
       now: DateTime.now(),
     );
@@ -141,7 +153,7 @@ class WeatherForecastCubit extends Cubit<WeatherForecastState> {
       DateTime.tryParse(date ?? '') ?? DateTime.now();
 
   @visibleForTesting
-  Future<void> scheduleNotificationsIfNeeded({
+  Future<void> scheduleNotificationIfNeeded({
     required WeatherForecast weatherForecast,
     required DateTime now,
   }) async {

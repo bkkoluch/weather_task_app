@@ -26,5 +26,4 @@ final Map<String, dynamic> tWeatherJSON = {
   },
   'wind_kph': 12.3,
   'cloud': 20,
-  'chance_of_rain': 30,
 };

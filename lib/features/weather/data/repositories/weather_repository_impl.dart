@@ -13,11 +13,16 @@ class WeatherRepositoryImpl implements WeatherRepository {
   const WeatherRepositoryImpl(this._weatherRemoteDataSource);
 
   @override
-  Future<Either<Failure, WeatherForecast>>
-      getCurrentAndWholeDayWeatherForecast() async {
+  Future<Either<Failure, WeatherForecast>> getCurrentAndFutureDaysForecast({
+    required int days,
+    required String city,
+  }) async {
     try {
       final WeatherForecast weatherForecast =
-          await _weatherRemoteDataSource.getCurrentAndWholeDayWeatherForecast();
+          await _weatherRemoteDataSource.getCurrentAndWholeDayWeatherForecast(
+        days: days,
+        city: city,
+      );
       return Right(weatherForecast);
     } on ServerException {
       return const Left(ServerFailure('getCurrentAndWholeDayWeatherForecast'));

@@ -38,7 +38,7 @@ class _WeatherForecastPageState extends State<WeatherForecastPage> {
         ),
         child: BlocBuilder<WeatherForecastCubit, WeatherForecastState>(
             bloc: _cubit,
-            builder: (context, state) {
+            builder: (_, state) {
               if (state.isLoading) {
                 return const _LoadingState();
               } else if (state.isFullyLoaded) {

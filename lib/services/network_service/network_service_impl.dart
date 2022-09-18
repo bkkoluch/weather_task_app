@@ -5,9 +5,7 @@ import 'package:weather_task_app/services/network_service/network_service.dart';
 
 @LazySingleton(as: NetworkService)
 class NetworkServiceImpl implements NetworkService {
-  final String _keyField = 'key';
-  final String _qField = 'q';
-  final String _daysField = 'days';
+  static const String _keyField = 'key';
 
   late final Dio _dio;
 
@@ -22,13 +20,15 @@ class NetworkServiceImpl implements NetworkService {
   // ..interceptors.add(PrettyDioLogger());
 
   @override
-  Future<Response> get({required String url}) => _dio.get(
+  Future<Response> get({
+    required String url,
+    Map<String, dynamic>? queryParameters,
+  }) =>
+      _dio.get(
         '${Keys.apiUrl}/$url.json',
         queryParameters: {
           _keyField: Keys.apiKey,
-          // TODO: change hardcoded Warsaw if needed
-          _qField: 'Warsaw',
-          _daysField: 3,
+          if (queryParameters != null) ...queryParameters
         },
       );
 }
