@@ -1,3 +1,11 @@
+// In a more robust project I would set up translations and those would be the keys,
+// to which every language would have a corresponding translation for
+// example:
+// en.json/en.arb
+// weatherConditionsText = 'Weather conditions: '
+// pl.json/pl.arb
+// weatherConditionsText = 'Warunki pogodowe: '
+
 const weatherConditionsText = 'Weather conditions: ';
 const temperatureText = 'Temperature: ';
 const windSpeedText = 'Wind speed: ';

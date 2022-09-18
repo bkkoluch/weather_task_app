@@ -7,6 +7,7 @@ import 'test_data.dart';
 void baseSetup() {
   registerFallbackValue(tDuration);
   registerFallbackValue(tUseCaseParams);
+  registerFallbackValue(tWeatherForecast);
   tz.initializeTimeZones();
 }
 
