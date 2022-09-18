@@ -30,6 +30,12 @@ class _WeatherForecastPageState extends State<WeatherForecastPage> {
   }
 
   @override
+  void dispose() {
+    _cubit.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(

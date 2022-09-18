@@ -21,6 +21,8 @@ void main() {
     getIt.registerFactory<WeatherForecastCubit>(() => weatherForecastCubit);
 
     when(() => weatherForecastCubit.loadForecast()).thenAnswer((_) async {});
+
+    when(() => weatherForecastCubit.close()).thenAnswer((_) async {});
   });
 
   final Widget testableWidget =
