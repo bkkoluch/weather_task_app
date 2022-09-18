@@ -43,10 +43,12 @@ class WeatherTab extends StatelessWidget {
           ),
           const SizedBox(height: CoreDimensions.paddingL),
           Container(
-              width: context.screenWidth,
-              padding: const EdgeInsets.only(left: CoreDimensions.paddingM),
-              child: WeatherText.paragraph(
-                  text: forecastForNextTwelveHoursBarChartText)),
+            width: context.screenWidth,
+            padding: const EdgeInsets.only(left: CoreDimensions.paddingM),
+            child: WeatherText.paragraph(
+              text: forecastForNextTwelveHoursBarChartText,
+            ),
+          ),
           WeatherTemperatureGraph(
             weatherList: state.forecastForNextTwelveHours!,
           ),

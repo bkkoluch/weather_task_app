@@ -7,9 +7,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   configureInjector();
   await getIt<NotificationService>().init();
-  // await getIt<NotificationService>().scheduleNotification(
-  //   durationToScheduleTheNotificationFor: const Duration(seconds: 6),
-  // );
   runApp(const MyApp());
 }
 

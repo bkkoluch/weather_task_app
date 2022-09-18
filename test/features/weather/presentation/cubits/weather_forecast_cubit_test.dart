@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:weather_task_app/features/weather/domain/models/weather.dart';
-import 'package:weather_task_app/features/weather/domain/use_cases/get_current_and_whole_day_weather_forecast_use_case.dart';
+import 'package:weather_task_app/features/weather/domain/use_cases/get_current_and_future_days_forecast_use_case.dart';
 import 'package:weather_task_app/features/weather/presentation/cubits/weather_forecast_cubit.dart';
 import 'package:weather_task_app/features/weather/presentation/cubits/weather_forecast_state.dart';
 import 'package:weather_task_app/services/injection_service/injection_service.dart';
@@ -14,7 +14,7 @@ import '../../../../test_data.dart';
 import '../../../../test_setup.dart';
 
 void main() {
-  final GetCurrentAndWholeDayWeatherForecastUseCase useCase =
+  final GetCurrentAndFutureDaysForecastUseCase useCase =
       MockGetCurrentAndWholeDayWeatherForecastUseCase();
 
   final NotificationService notificationService = MockNotificationService();
@@ -27,7 +27,7 @@ void main() {
     baseSetup();
 
     getIt
-      ..registerFactory<GetCurrentAndWholeDayWeatherForecastUseCase>(
+      ..registerFactory<GetCurrentAndFutureDaysForecastUseCase>(
         () => useCase,
       )
       ..registerLazySingleton<NotificationService>(() => notificationService);
@@ -59,7 +59,7 @@ void main() {
         'should emit WeatherForecastPageStatus.loaded with weather forecast on'
         'a successful call',
         setUp: () {
-          when(() => useCase.call()).thenAnswer(
+          when(() => useCase.call(captureAny())).thenAnswer(
             (_) async => const Right(tWeatherForecast),
           );
         },
@@ -87,7 +87,7 @@ void main() {
           ),
         ],
         verify: (_) => [
-          verify(() => useCase.call()).called(1),
+          verify(() => useCase.call(tUseCaseParams)).called(1),
           verify(() => notificationService.clearScheduledNotification())
               .called(1),
         ],
@@ -97,7 +97,7 @@ void main() {
         'should emit WeatherForecastPageStatus.loaded with weather forecast on'
         'a successful call',
         setUp: () {
-          when(() => useCase.call()).thenAnswer(
+          when(() => useCase.call(captureAny())).thenAnswer(
             (_) async => Right(tWeatherForecast.copyWith()),
           );
         },
@@ -125,7 +125,7 @@ void main() {
           ),
         ],
         verify: (_) => [
-          verify(() => useCase.call()).called(1),
+          verify(() => useCase.call(tUseCaseParams)).called(1),
           verify(() => notificationService.clearScheduledNotification())
               .called(1),
         ],
@@ -134,7 +134,7 @@ void main() {
       blocTest<WeatherForecastCubit, WeatherForecastState>(
         'should emit WeatherForecastPageStatus.error on unsuccessful call',
         setUp: () {
-          when(() => useCase.call()).thenAnswer(
+          when(() => useCase.call(captureAny())).thenAnswer(
             (_) async => const Left(tServerFailure),
           );
         },
@@ -145,7 +145,7 @@ void main() {
           initialState.copyWith(status: WeatherForecastPageStatus.error),
         ],
         verify: (_) => [
-          verify(() => useCase.call()).called(1),
+          verify(() => useCase.call(tUseCaseParams)).called(1),
           verifyNoMoreInteractions(notificationService),
         ],
       );
@@ -247,7 +247,7 @@ void main() {
               .thenAnswer((_) async {});
 
           // Act
-          await cubit.scheduleNotificationsIfNeeded(
+          await cubit.scheduleNotificationIfNeeded(
             weatherForecast: tWeatherForecast,
             now: tCurrentTimeBefore8AM,
           );
@@ -270,7 +270,7 @@ void main() {
               .thenAnswer((_) async {});
 
           // Act
-          await cubit.scheduleNotificationsIfNeeded(
+          await cubit.scheduleNotificationIfNeeded(
             weatherForecast: tNoRainWeatherForecast,
             now: tCurrentTimeBefore8AM,
           );
@@ -292,7 +292,7 @@ void main() {
               .thenAnswer((_) async {});
 
           // Act
-          await cubit.scheduleNotificationsIfNeeded(
+          await cubit.scheduleNotificationIfNeeded(
             weatherForecast: tMultipleDaysWeatherForecast,
             now: tCurrentTime,
           );
@@ -315,7 +315,7 @@ void main() {
               .thenAnswer((_) async {});
 
           // Act
-          await cubit.scheduleNotificationsIfNeeded(
+          await cubit.scheduleNotificationIfNeeded(
             weatherForecast: tNoRainWeatherForecast,
             now: tCurrentTime,
           );

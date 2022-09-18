@@ -15,7 +15,7 @@ import 'package:weather_task_app/features/weather/data/repositories/weather_repo
     as _i11;
 import 'package:weather_task_app/features/weather/domain/repositories/weather_repository.dart'
     as _i10;
-import 'package:weather_task_app/features/weather/domain/use_cases/get_current_and_whole_day_weather_forecast_use_case.dart'
+import 'package:weather_task_app/features/weather/domain/use_cases/get_current_and_future_days_forecast_use_case.dart'
     as _i12;
 import 'package:weather_task_app/features/weather/presentation/cubits/weather_forecast_cubit.dart'
     as _i7;
@@ -48,8 +48,8 @@ _i1.GetIt $initGetIt(
       () => _i9.WeatherRemoteDataSourceImpl(get<_i3.NetworkService>()));
   gh.factory<_i10.WeatherRepository>(
       () => _i11.WeatherRepositoryImpl(get<_i8.WeatherRemoteDataSource>()));
-  gh.factory<_i12.GetCurrentAndWholeDayWeatherForecastUseCase>(() =>
-      _i12.GetCurrentAndWholeDayWeatherForecastUseCase(
+  gh.factory<_i12.GetCurrentAndFutureDaysForecastUseCase>(() =>
+      _i12.GetCurrentAndFutureDaysForecastUseCase(
           get<_i10.WeatherRepository>()));
   return get;
 }

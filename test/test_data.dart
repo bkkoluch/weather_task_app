@@ -5,6 +5,7 @@ import 'package:weather_task_app/features/weather/domain/models/weather.dart';
 import 'package:weather_task_app/features/weather/domain/models/weather_condition.dart';
 import 'package:weather_task_app/features/weather/domain/models/weather_forecast.dart';
 import 'package:weather_task_app/features/weather/domain/models/weather_location.dart';
+import 'package:weather_task_app/features/weather/domain/use_cases/get_current_and_future_days_forecast_use_case.dart';
 
 import 'test_json_data.dart';
 
@@ -67,7 +68,6 @@ const Weather tWeather = Weather(
   maxWindSpeedKm: 12.5,
   cloudCover: 50,
   date: tDateTimeString,
-  chanceOfRain: 30,
 );
 
 const Weather tTomorrowWeather = Weather(
@@ -76,7 +76,6 @@ const Weather tTomorrowWeather = Weather(
   maxWindSpeedKm: 13.5,
   cloudCover: 51,
   date: tNextDateTimeString,
-  chanceOfRain: 70,
 );
 
 final DateTime tCurrentTime = DateTime.parse(tDateTimeString);
@@ -100,3 +99,9 @@ const ServerException tServerException = ServerException('ServerException');
 const ServerFailure tServerFailure = ServerFailure('ServerFailure');
 
 const Duration tDuration = Duration(seconds: 10);
+
+const int tDays = 3;
+const String tCity = 'Warsaw';
+
+const GetCurrentAndFutureDaysForecastUseCaseParams tUseCaseParams =
+    GetCurrentAndFutureDaysForecastUseCaseParams(days: tDays, city: tCity);

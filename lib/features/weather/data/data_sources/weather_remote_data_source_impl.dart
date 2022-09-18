@@ -12,12 +12,26 @@ class WeatherRemoteDataSourceImpl implements WeatherRemoteDataSource {
 
   const WeatherRemoteDataSourceImpl(this._networkService);
 
+  static const String _daysField = 'days';
+  static const String _qField = 'q';
+
   @override
-  Future<WeatherForecast> getCurrentAndWholeDayWeatherForecast() async {
+  Future<WeatherForecast> getCurrentAndWholeDayWeatherForecast({
+    required int days,
+    required String city,
+  }) async {
     try {
-      final result = await _networkService.get(url: Endpoints.forecast);
+      final result = await _networkService.get(
+        url: Endpoints.forecast,
+        queryParameters: {
+          _daysField: days,
+          _qField: city,
+        },
+      );
+
       final WeatherForecast weatherForecast =
           WeatherForecast.fromJson(result.data);
+
       return weatherForecast;
     } on DioError catch (e) {
       throw ServerException(e.toString());

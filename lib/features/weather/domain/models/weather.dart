@@ -14,7 +14,6 @@ class Weather with _$Weather {
     required WeatherCondition condition,
     @JsonKey(name: 'wind_kph') required double maxWindSpeedKm,
     @JsonKey(name: 'cloud') required int cloudCover,
-    @JsonKey(name: 'chance_of_rain') @Default(0) int chanceOfRain,
   }) = _Weather;
 
   factory Weather.fromJson(Map<String, dynamic> json) =>

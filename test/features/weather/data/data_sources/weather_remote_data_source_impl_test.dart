@@ -22,7 +22,12 @@ void main() {
         'should return WeatherForecast on a successful call',
         () async {
           // Arrange
-          when(() => networkService.get(url: any(named: 'url'))).thenAnswer(
+          when(
+            () => networkService.get(
+              url: any(named: 'url'),
+              queryParameters: any(named: 'queryParameters'),
+            ),
+          ).thenAnswer(
             (_) async => Response(
               requestOptions: tRequestOptions,
               data: tWeatherForecastJSON,
@@ -31,11 +36,16 @@ void main() {
 
           // Act
           final result = await weatherRemoteDataSourceImpl
-              .getCurrentAndWholeDayWeatherForecast();
+              .getCurrentAndWholeDayWeatherForecast(days: tDays, city: tCity);
 
           // Assert
           expect(result, tWeatherForecastFromJSON);
-          verify(() => networkService.get(url: Endpoints.forecast)).called(1);
+          verify(
+            () => networkService.get(
+              url: Endpoints.forecast,
+              queryParameters: {'days': tDays, 'q': tCity},
+            ),
+          ).called(1);
         },
       );
 
@@ -43,16 +53,25 @@ void main() {
         'should throw ServerException on DioError',
         () async {
           // Arrange
-          when(() => networkService.get(url: any(named: 'url')))
-              .thenThrow(DioError(requestOptions: tRequestOptions));
+          when(
+            () => networkService.get(
+              url: any(named: 'url'),
+              queryParameters: any(named: 'queryParameters'),
+            ),
+          ).thenThrow(DioError(requestOptions: tRequestOptions));
 
           // Act
           final result = weatherRemoteDataSourceImpl
-              .getCurrentAndWholeDayWeatherForecast();
+              .getCurrentAndWholeDayWeatherForecast(days: tDays, city: tCity);
 
           // Assert
           expect(result, throwsA(isA<ServerException>()));
-          verify(() => networkService.get(url: Endpoints.forecast)).called(1);
+          verify(
+            () => networkService.get(
+              url: Endpoints.forecast,
+              queryParameters: {'days': tDays, 'q': tCity},
+            ),
+          ).called(1);
         },
       );
     });

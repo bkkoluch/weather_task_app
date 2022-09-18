@@ -21,18 +21,25 @@ void main() {
         'should return Right(WeatherForecast) for a successful call',
         () async {
           // Arrange
-          when(() => weatherRemoteDataSource
-                  .getCurrentAndWholeDayWeatherForecast())
-              .thenAnswer((_) async => tWeatherForecast);
+          when(
+            () => weatherRemoteDataSource.getCurrentAndWholeDayWeatherForecast(
+              days: any(named: 'days'),
+              city: any(named: 'city'),
+            ),
+          ).thenAnswer((_) async => tWeatherForecast);
 
           // Act
           final result = await weatherRepositoryImpl
-              .getCurrentAndWholeDayWeatherForecast();
+              .getCurrentAndFutureDaysForecast(days: tDays, city: tCity);
 
           // Assert
           expect(result, const Right(tWeatherForecast));
-          verify(() => weatherRemoteDataSource
-              .getCurrentAndWholeDayWeatherForecast()).called(1);
+          verify(
+            () => weatherRemoteDataSource.getCurrentAndWholeDayWeatherForecast(
+              days: tDays,
+              city: tCity,
+            ),
+          ).called(1);
         },
       );
 
@@ -40,21 +47,28 @@ void main() {
         'should return Left(ServerFailure) on ServerException',
         () async {
           // Arrange
-          when(() => weatherRemoteDataSource
-                  .getCurrentAndWholeDayWeatherForecast())
-              .thenThrow(tServerException);
+          when(
+            () => weatherRemoteDataSource.getCurrentAndWholeDayWeatherForecast(
+              days: any(named: 'days'),
+              city: any(named: 'city'),
+            ),
+          ).thenThrow(tServerException);
 
           // Act
           final result = await weatherRepositoryImpl
-              .getCurrentAndWholeDayWeatherForecast();
+              .getCurrentAndFutureDaysForecast(days: tDays, city: tCity);
 
           // Assert
           expect(
             result,
             const Left(ServerFailure('getCurrentAndWholeDayWeatherForecast')),
           );
-          verify(() => weatherRemoteDataSource
-              .getCurrentAndWholeDayWeatherForecast()).called(1);
+          verify(
+            () => weatherRemoteDataSource.getCurrentAndWholeDayWeatherForecast(
+              days: tDays,
+              city: tCity,
+            ),
+          ).called(1);
         },
       );
     });
