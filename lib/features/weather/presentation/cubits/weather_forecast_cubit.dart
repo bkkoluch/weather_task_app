@@ -14,7 +14,7 @@ import 'package:weather_task_app/services/injection_service/injection_service.da
 import 'package:weather_task_app/services/notification_service/notification_service.dart';
 
 const int _defaultDaysToFetch = 3;
-const String _defaultCityToFetchForecastFor = 'Rome';
+const String _defaultCityToFetchForecastFor = 'Warsaw';
 
 @injectable
 class WeatherForecastCubit extends Cubit<WeatherForecastState> {
@@ -198,9 +198,7 @@ class WeatherForecastCubit extends Cubit<WeatherForecastState> {
 
     return dayForecastList.firstWhereOrNull((forecast) =>
             DateTime.tryParse(forecast.date)?.day == now.day + dayIncrementer &&
-                forecast.dayForecast.willItRain &&
-                dayForecastList.indexOf(forecast) == 0 ||
-            dayForecastList.indexOf(forecast) == 1) !=
+            forecast.dayForecast.willItRain) !=
         null;
   }
 
